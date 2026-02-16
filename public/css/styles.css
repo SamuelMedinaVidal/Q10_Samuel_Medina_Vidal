@@ -1,64 +1,166 @@
-/* =========================================
-   1. TIPOGRAFÍA EXTRA BOLD (IMPACTO MÁXIMO)
-   ========================================= */
+/* =============================================================================
+   ECONOMIK0 - ESTILOS PRINCIPALES
+   =============================================================================
+   Archivo CSS optimizado y refactorizado para máximo rendimiento.
+   Utiliza variables CSS para mantener consistencia y facilitar cambios.
+   
+   ESTRUCTURA:
+   1. Variables CSS globales
+   2. Reset y tipografía base
+   3. Fondo animado (orbes)
+   4. Navegación
+   5. Componentes Glassmorphism
+   6. Formularios
+   7. Botones
+   8. Alertas
+   9. Tablas
+   10. Cards de producto
+   11. Carrito
+   12. Media Queries (agrupadas al final)
+   ============================================================================= */
+
+
+/* =============================================================================
+   1. VARIABLES CSS GLOBALES
+   =============================================================================
+   Centralizamos todos los valores repetitivos para facilitar mantenimiento
+   y garantizar consistencia visual en toda la aplicación.
+   ============================================================================= */
+:root {
+    /* --- Colores corporativos --- */
+    --color-primary: #91ba41;           /* Verde corporativo Economik0 */
+    --color-primary-dark: #7da336;      /* Verde hover/activo */
+    --color-primary-rgb: 145, 186, 65;  /* RGB para transparencias */
+    
+    /* --- Colores del orbe naranja --- */
+    --color-orb-intense: rgba(255, 100, 0, 0.6);
+    --color-orb-medium: rgba(255, 140, 0, 0.2);
+    --color-orb-gradient: radial-gradient(circle, var(--color-orb-intense) 0%, var(--color-orb-medium) 40%, rgba(255, 255, 255, 0) 70%);
+    
+    /* --- Colores de estado --- */
+    --color-success: #5a7a1f;
+    --color-warning: #856404;
+    --color-danger: #dc3545;
+    --color-danger-dark: #a71d2a;
+    
+    /* --- Colores neutros --- */
+    --color-text: #333;
+    --color-text-muted: #666;
+    --color-text-light: #888;
+    --color-white: #ffffff;
+    --color-bg: #ffffff;
+    
+    /* --- Tipografía --- */
+    --font-family: 'Inter', sans-serif;
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --letter-spacing-tight: -0.06em;    /* Espaciado compacto para títulos */
+    --letter-spacing-normal: -0.02em;
+    --letter-spacing-wide: 0.05em;
+    
+    /* --- Efectos Glassmorphism --- */
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-bg-hover: rgba(255, 255, 255, 0.85);
+    --glass-blur: blur(25px);
+    --glass-blur-light: blur(10px);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+    
+    /* --- Bordes y sombras --- */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-xl: 40px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.04);
+    
+    /* --- Transiciones --- */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease-in-out;
+}
+
+
+/* =============================================================================
+   2. RESET Y TIPOGRAFÍA BASE
+   =============================================================================
+   Configuración fundamental del documento.
+   Inter 800 es nuestra tipografía principal para impacto visual máximo.
+   ============================================================================= */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
+    font-family: var(--font-family);
+    background-color: var(--color-bg);
     min-height: 100vh;
     overflow-x: hidden;
 }
 
+/* Títulos con estilo compacto característico de Economik0 */
 h1 {
-    font-weight: 800; /* Extra Bold */
-    letter-spacing: -0.06em; /* Letras muy juntas */
-    line-height: 0.85; /* Estilo compacto original */
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: 0.85;
     font-size: clamp(3.5rem, 12vw, 5.5rem);
     margin-bottom: 1.5rem;
 }
 
+/* Clase utilitaria para el color verde corporativo */
 .zero-color { 
-    color: #91ba41 !important; 
-    font-weight: 800; 
+    color: var(--color-primary) !important; 
+    font-weight: var(--font-weight-extrabold); 
 }
 
-/* =========================================
-   2. FONDO NARANJA CENTRADO E INTENSO
-   ========================================= */
+
+/* =============================================================================
+   3. FONDO ANIMADO (ORBES)
+   =============================================================================
+   El orbe naranja central con efecto "respiración" es la firma visual
+   de Economik0. Usa animación CSS pura para máximo rendimiento.
+   ============================================================================= */
 .bg-wrapper {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;                           /* Shorthand para top/right/bottom/left: 0 */
     z-index: -1;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: var(--color-white);
 }
 
-/* El orbe central que "respira" */
+/* Orbe central con gradiente radial y animación de pulso */
 .light-orb {
     position: absolute;
     border-radius: 50%;
-    /* Aumentamos el brillo y tamaño */
     width: 70vw;
     height: 70vw;
     max-width: 800px;
     max-height: 800px;
-    background: radial-gradient(circle, rgba(255,100,0,0.6) 0%, rgba(255,140,0,0.2) 40%, rgba(255,255,255,0) 70%);
+    background: var(--color-orb-gradient);
     filter: blur(50px);
     animation: pulseCenter 5s infinite ease-in-out;
 }
 
 @keyframes pulseCenter {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.4); opacity: 0.9; }
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 0.5; 
+    }
+    50% { 
+        transform: scale(1.4); 
+        opacity: 0.9; 
+    }
 }
 
-/* =========================================
-   3. ANIMACIÓN HAMBURGUESA A CRUZ (Navbar)
-   ========================================= */
+
+/* =============================================================================
+   4. NAVEGACIÓN
+   =============================================================================
+   Navbar responsive con animación hamburguesa → cruz.
+   El menú móvil usa efecto cristal consistente con el resto del diseño.
+   ============================================================================= */
+
+/* Botón hamburguesa sin bordes por defecto de Bootstrap */
 .navbar-toggler {
     border: none !important;
     padding: 0;
@@ -68,8 +170,11 @@ h1 {
     cursor: pointer;
 }
 
-.navbar-toggler:focus { box-shadow: none !important; }
+.navbar-toggler:focus { 
+    box-shadow: none !important; 
+}
 
+/* Barras del icono hamburguesa */
 .toggler-icon {
     display: block;
     position: absolute;
@@ -77,20 +182,19 @@ h1 {
     width: 100%;
     background: #212529;
     border-radius: 2px;
-    transition: all 0.3s ease-in-out;
+    transition: all var(--transition-normal);
     left: 0;
 }
 
-/* Posiciones iniciales */
 .top-bar { top: 0; }
 .middle-bar { top: 9px; }
 .bottom-bar { top: 18px; }
 
-/* Transformación a Cruz */
+/* Transformación a cruz cuando está abierto */
 .navbar-toggler:not(.collapsed) .top-bar {
     top: 9px;
     transform: rotate(135deg);
-    background: #91ba41; /* Cambia a verde al abrir */
+    background: var(--color-primary);
 }
 
 .navbar-toggler:not(.collapsed) .middle-bar {
@@ -101,69 +205,124 @@ h1 {
 .navbar-toggler:not(.collapsed) .bottom-bar {
     top: 9px;
     transform: rotate(-135deg);
-    background: #91ba41;
+    background: var(--color-primary);
 }
 
-/* =========================================
-   4. CAJA HERO Y BOTONES
-   ========================================= */
+/* Link de logout con color de advertencia */
+.logout-link {
+    color: var(--color-danger) !important;
+    font-weight: 500;
+}
+
+.logout-link:hover {
+    color: var(--color-danger-dark) !important;
+}
+
+/* Badge del carrito en navbar */
+.cart-link {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: linear-gradient(135deg, #ff6a00 0%, #ff8c00 100%);
+    color: var(--color-white);
+    font-size: 0.7rem;
+    font-weight: var(--font-weight-bold);
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(255, 106, 0, 0.4);
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+
+/* =============================================================================
+   5. COMPONENTES GLASSMORPHISM
+   =============================================================================
+   El efecto "cristal" es el sello distintivo del diseño de Economik0.
+   Usa backdrop-filter con fallback para navegadores antiguos.
+   ============================================================================= */
+
+/* Contenedor principal con efecto cristal */
 .hero-text-box {
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     padding: clamp(2rem, 8vw, 5rem);
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--border-radius-xl);
+    border: var(--glass-border);
     text-align: center;
     margin: 0 15px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+    box-shadow: var(--shadow-lg);
 }
 
-.btn-register {
-    background-color: #91ba41 !important;
-    color: white !important;
-    font-weight: 700;
-    border-radius: 12px;
-    padding: 12px 25px !important;
-    border: none;
-    transition: 0.3s;
+/* Cards del dashboard con efecto similar */
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.6);
+    border: var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    height: 100%;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-@media (max-width: 768px) {
-    h1 { line-height: 0.95; }
-    .navbar-collapse {
-        background: rgba(255,255,255,0.98);
-        padding: 1.5rem;
-        border-radius: 20px;
-        margin-top: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
 }
 
-/* =========================================
-   5. FORMULARIO PROVEEDOR (ESTILOS CUSTOM)
-   ========================================= */
-.proveedor-form {
+.dashboard-card h5 {
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+}
+
+.dashboard-card p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+
+/* =============================================================================
+   6. FORMULARIOS
+   =============================================================================
+   Inputs con estilo glassmorphism consistente.
+   Focus states en verde corporativo para accesibilidad.
+   ============================================================================= */
+.proveedor-form,
+.auth-form,
+.product-form,
+.search-form {
     text-align: left;
 }
 
 .form-label-custom {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    color: #333;
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
     margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--letter-spacing-normal);
 }
 
 .form-control-custom {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-family);
     background: rgba(255, 255, 255, 0.6) !important;
     border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
-    border-radius: 12px !important;
+    border-radius: var(--border-radius-md) !important;
     padding: 12px 16px !important;
     font-size: 1rem;
-    color: #333 !important;
-    transition: all 0.3s ease;
+    color: var(--color-text) !important;
+    transition: all var(--transition-normal);
 }
 
 .form-control-custom::placeholder {
@@ -171,32 +330,32 @@ h1 {
 }
 
 .form-control-custom:focus {
-    background: rgba(255, 255, 255, 0.85) !important;
-    border-color: #91ba41 !important;
-    box-shadow: 0 0 0 3px rgba(145, 186, 65, 0.2) !important;
+    background: var(--glass-bg-hover) !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2) !important;
     outline: none;
 }
 
-/* Input de archivo personalizado */
+/* Input de archivo */
 .form-control-custom[type="file"] {
     padding: 10px 16px !important;
 }
 
 .form-control-custom[type="file"]::-webkit-file-upload-button {
-    background: #91ba41;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     padding: 8px 16px;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
     margin-right: 12px;
-    transition: background 0.3s ease;
+    transition: background var(--transition-normal);
 }
 
 .form-control-custom[type="file"]::-webkit-file-upload-button:hover {
-    background: #7da336;
+    background: var(--color-primary-dark);
 }
 
 /* Textarea */
@@ -205,17 +364,142 @@ textarea.form-control-custom {
     min-height: 120px;
 }
 
-/* Alertas personalizadas */
+/* Checkbox personalizado */
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-check-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--color-primary-rgb), 0.25);
+}
+
+.form-check-label {
+    font-family: var(--font-family);
+    color: #555;
+}
+
+/* Link de login */
+.link-login {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: color var(--transition-normal);
+}
+
+.link-login:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* Errores de formulario */
+.invalid-feedback,
+.form-error-message {
+    color: var(--color-danger);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-family: var(--font-family);
+}
+
+
+/* =============================================================================
+   7. BOTONES
+   =============================================================================
+   Sistema de botones coherente con la identidad visual.
+   El botón principal (register) usa el verde corporativo.
+   ============================================================================= */
+
+/* Botón principal verde */
+.btn-register {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-md);
+    padding: 12px 25px !important;
+    border: none;
+    transition: all var(--transition-normal);
+}
+
+.btn-register:hover {
+    background-color: var(--color-primary-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* Botón outline secundario */
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    border-radius: var(--border-radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+/* Botón outline danger */
+.btn-outline-danger {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+    border-radius: var(--border-radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+/* Botón de retroceso */
+.btn-back {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-normal);
+}
+
+.btn-back:hover {
+    color: var(--color-primary);
+}
+
+/* Botones de estado (activo/inactivo) */
+.btn-status-active {
+    background: rgba(var(--color-primary-rgb), 0.2);
+    color: var(--color-success);
+    border: none;
+    font-weight: var(--font-weight-semibold);
+}
+
+.btn-status-inactive {
+    background: rgba(108, 117, 125, 0.2);
+    color: #495057;
+    border: none;
+    font-weight: var(--font-weight-semibold);
+}
+
+
+/* =============================================================================
+   8. ALERTAS
+   =============================================================================
+   Alertas con estilo glassmorphism sutil.
+   Colores semánticos para éxito/error.
+   ============================================================================= */
 .alert {
-    border-radius: 12px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-family);
     font-weight: 500;
 }
 
 .alert-success {
-    background: rgba(145, 186, 65, 0.15);
-    border: 1px solid rgba(145, 186, 65, 0.4);
-    color: #5a7a1f;
+    background: rgba(var(--color-primary-rgb), 0.15);
+    border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+    color: var(--color-success);
 }
 
 .alert-danger {
@@ -224,218 +508,119 @@ textarea.form-control-custom {
     color: #842029;
 }
 
-/* Botón register hover */
-.btn-register:hover {
-    background-color: #7da336 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(145, 186, 65, 0.3);
-}
 
-/* Errores de formulario */
-.invalid-feedback,
-.form-error-message {
-    color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-    font-family: 'Inter', sans-serif;
-}
+/* =============================================================================
+   9. TABLAS
+   =============================================================================
+   Tablas con estilo de filas separadas y efecto hover.
+   Usadas en inventario y carrito.
+   ============================================================================= */
 
-/* Responsivo */
-@media (max-width: 576px) {
-    .hero-text-box {
-        padding: clamp(1.5rem, 5vw, 3rem);
-        border-radius: 25px;
-    }
-    
-    .form-control-custom {
-        font-size: 16px; /* Evita zoom en iOS */
-    }
-}
-
-/* =========================================
-   6. FORMULARIOS DE AUTENTICACIÓN
-   ========================================= */
-.auth-form {
-    text-align: left;
-}
-
-.link-login {
-    color: #91ba41;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.link-login:hover {
-    color: #7da336;
-    text-decoration: underline;
-}
-
-/* Checkbox personalizado */
-.form-check-input:checked {
-    background-color: #91ba41;
-    border-color: #91ba41;
-}
-
-.form-check-input:focus {
-    border-color: #91ba41;
-    box-shadow: 0 0 0 0.25rem rgba(145, 186, 65, 0.25);
-}
-
-.form-check-label {
-    font-family: 'Inter', sans-serif;
-    color: #555;
-}
-
-/* Logout link en navbar */
-.logout-link {
-    color: #dc3545 !important;
-    font-weight: 500;
-}
-
-.logout-link:hover {
-    color: #a71d2a !important;
-}
-
-/* =========================================
-   7. DASHBOARD CARDS
-   ========================================= */
-.dashboard-card {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    padding: 1.5rem;
-    height: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-card h5 {
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-.dashboard-card p {
-    color: #666;
-    font-size: 0.95rem;
-}
-
-/* Botón outline */
-.btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* =========================================
-   8. PANEL ADMIN - INVENTARIO
-   ========================================= */
-.table-custom {
+/* Tabla de inventario */
+.table-custom,
+.table-cart {
     background: transparent;
     border-collapse: separate;
     border-spacing: 0 8px;
 }
 
-.table-custom thead th {
+.table-custom thead th,
+.table-cart thead th {
     background: transparent;
     border: none;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #333;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-normal);
+    color: var(--color-text);
     padding: 1rem;
 }
 
-.table-custom tbody tr {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 12px;
-    transition: all 0.3s ease;
+.table-cart thead th {
+    font-size: 0.9rem;
 }
 
-.table-custom tbody tr:hover {
-    background: rgba(255, 255, 255, 0.85);
+.table-cart {
+    border-spacing: 0 10px;
+}
+
+.table-custom tbody tr,
+.table-cart tbody tr {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-normal);
+}
+
+.table-custom tbody tr:hover,
+.table-cart tbody tr:hover {
+    background: var(--glass-bg-hover);
     transform: translateX(5px);
 }
 
-.table-custom tbody td {
+.table-custom tbody td,
+.table-cart tbody td {
     border: none;
     padding: 1rem;
     vertical-align: middle;
 }
 
-.table-custom tbody tr td:first-child {
-    border-radius: 12px 0 0 12px;
+.table-custom tbody tr td:first-child,
+.table-cart tbody tr td:first-child {
+    border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
 }
 
-.table-custom tbody tr td:last-child {
-    border-radius: 0 12px 12px 0;
+.table-custom tbody tr td:last-child,
+.table-cart tbody tr td:last-child {
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.table-cart tbody tr td:first-child {
+    border-radius: 16px 0 0 16px;
+}
+
+.table-cart tbody tr td:last-child {
+    border-radius: 0 16px 16px 0;
 }
 
 .table-row-inactive {
     opacity: 0.6;
 }
 
+/* Miniaturas de producto */
 .product-thumb {
     width: 50px;
     height: 50px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm);
 }
 
 .product-thumb-placeholder {
     width: 50px;
     height: 50px;
-    background: rgba(145, 186, 65, 0.1);
-    border-radius: 8px;
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-radius: var(--border-radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
 }
 
+/* Etiquetas de precio y stock */
 .price-tag {
-    font-weight: 700;
-    color: #91ba41;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
 }
 
 .stock-badge {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
 }
 
-.stock-ok { background: rgba(145, 186, 65, 0.2); color: #5a7a1f; }
-.stock-low { background: rgba(255, 193, 7, 0.2); color: #856404; }
+.stock-ok { background: rgba(var(--color-primary-rgb), 0.2); color: var(--color-success); }
+.stock-low { background: rgba(255, 193, 7, 0.2); color: var(--color-warning); }
 .stock-out { background: rgba(220, 53, 69, 0.2); color: #842029; }
 
-.btn-status-active {
-    background: rgba(145, 186, 65, 0.2);
-    color: #5a7a1f;
-    border: none;
-    font-weight: 600;
-}
-
-.btn-status-inactive {
-    background: rgba(108, 117, 125, 0.2);
-    color: #495057;
-    border: none;
-    font-weight: 600;
-}
-
+/* Estado vacío */
 .empty-state {
     padding: 3rem;
 }
@@ -446,25 +631,17 @@ textarea.form-control-custom {
     margin-bottom: 1rem;
 }
 
-.btn-back {
-    color: #666;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.btn-back:hover {
-    color: #91ba41;
-}
-
 .img-preview {
     max-width: 150px;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
 }
 
-/* =========================================
-   9. TIENDA - CATÁLOGO
-   ========================================= */
+
+/* =============================================================================
+   10. CARDS DE PRODUCTO (TIENDA)
+   =============================================================================
+   Cards de producto con hover animado y efecto glassmorphism.
+   ============================================================================= */
 .product-card-link {
     text-decoration: none;
     color: inherit;
@@ -473,9 +650,9 @@ textarea.form-control-custom {
 .product-card {
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal);
     height: 100%;
 }
 
@@ -496,7 +673,7 @@ textarea.form-control-custom {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
 }
 
 .product-card:hover .product-image {
@@ -510,7 +687,7 @@ textarea.form-control-custom {
     align-items: center;
     justify-content: center;
     font-size: 3rem;
-    background: rgba(145, 186, 65, 0.1);
+    background: rgba(var(--color-primary-rgb), 0.1);
 }
 
 .stock-indicator {
@@ -520,13 +697,13 @@ textarea.form-control-custom {
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.7rem;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
+    font-weight: var(--font-weight-semibold);
+    backdrop-filter: var(--glass-blur-light);
 }
 
-.stock-indicator.ok { background: rgba(145, 186, 65, 0.9); color: white; }
-.stock-indicator.low { background: rgba(255, 193, 7, 0.9); color: #333; }
-.stock-indicator.out { background: rgba(220, 53, 69, 0.9); color: white; }
+.stock-indicator.ok { background: rgba(var(--color-primary-rgb), 0.9); color: var(--color-white); }
+.stock-indicator.low { background: rgba(255, 193, 7, 0.9); color: var(--color-text); }
+.stock-indicator.out { background: rgba(220, 53, 69, 0.9); color: var(--color-white); }
 
 .product-info {
     padding: 1rem;
@@ -534,18 +711,18 @@ textarea.form-control-custom {
 
 .product-category {
     font-size: 0.75rem;
-    color: #91ba41;
-    font-weight: 600;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--letter-spacing-wide);
 }
 
 .product-name {
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     letter-spacing: -0.03em;
     margin: 0.5rem 0;
     font-size: 1rem;
-    color: #333;
+    color: var(--color-text);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -554,29 +731,27 @@ textarea.form-control-custom {
 
 .product-price {
     font-size: 1.25rem;
-    font-weight: 800;
-    color: #91ba41;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-primary);
 }
 
 .product-location {
-    color: #888;
+    color: var(--color-text-light);
     font-size: 0.8rem;
     display: block;
     margin-top: 0.5rem;
 }
 
-/* =========================================
-   10. TIENDA - DETALLE PRODUCTO
-   ========================================= */
+/* Detalle de producto */
 .product-detail-image {
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
     background: #f8f9fa;
 }
 
 .product-detail-image img {
     width: 100%;
-    border-radius: 20px;
+    border-radius: var(--border-radius-lg);
 }
 
 .product-image-placeholder-large {
@@ -586,23 +761,23 @@ textarea.form-control-custom {
     align-items: center;
     justify-content: center;
     font-size: 6rem;
-    background: rgba(145, 186, 65, 0.1);
-    border-radius: 20px;
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-radius: var(--border-radius-lg);
 }
 
 .product-category-badge {
     display: inline-block;
-    background: rgba(145, 186, 65, 0.15);
-    color: #5a7a1f;
+    background: rgba(var(--color-primary-rgb), 0.15);
+    color: var(--color-success);
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     margin-bottom: 1rem;
 }
 
 .product-detail-title {
-    font-weight: 800;
+    font-weight: var(--font-weight-extrabold);
     letter-spacing: -0.04em;
     font-size: clamp(1.8rem, 5vw, 2.5rem);
     line-height: 1.1;
@@ -611,130 +786,43 @@ textarea.form-control-custom {
 
 .product-detail-price {
     font-size: 2.5rem;
-    font-weight: 800;
-    color: #91ba41;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-primary);
 }
 
 .stock-badge-large {
     display: inline-block;
     padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: var(--border-radius-md);
+    font-weight: var(--font-weight-semibold);
 }
 
 .product-description h5,
 .product-location-info h5,
 .product-seller h5 {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #333;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-normal);
+    color: var(--color-text);
     margin-bottom: 0.5rem;
 }
 
 .product-description p,
 .product-location-info p,
 .product-seller p {
-    color: #666;
+    color: var(--color-text-muted);
 }
 
 .section-title {
-    font-weight: 800;
+    font-weight: var(--font-weight-extrabold);
     letter-spacing: -0.04em;
 }
 
-/* Search form */
-.search-form {
-    text-align: left;
-}
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .table-custom {
-        font-size: 0.85rem;
-    }
-    
-    .product-thumb {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .btn-group {
-        flex-direction: column;
-        gap: 4px;
-    }
-}
-
-/* =========================================
+/* =============================================================================
    11. CARRITO DE COMPRAS
-   ========================================= */
-
-/* Badge del carrito en navbar */
-.cart-link {
-    position: relative;
-}
-
-.cart-badge {
-    position: absolute;
-    top: -5px;
-    right: -10px;
-    background: linear-gradient(135deg, #ff6a00 0%, #ff8c00 100%);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 10px;
-    min-width: 18px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(255, 106, 0, 0.4);
-    animation: pulse-badge 2s infinite;
-}
-
-@keyframes pulse-badge {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-/* Tabla del carrito */
-.table-cart {
-    background: transparent;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-}
-
-.table-cart thead th {
-    background: transparent;
-    border: none;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #333;
-    padding: 1rem;
-    font-size: 0.9rem;
-}
-
-.table-cart tbody tr {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 16px;
-    transition: all 0.3s ease;
-}
-
-.table-cart tbody tr:hover {
-    background: rgba(255, 255, 255, 0.85);
-    transform: translateX(5px);
-}
-
-.table-cart tbody td {
-    border: none;
-    padding: 1rem;
-    vertical-align: middle;
-}
-
-.table-cart tbody tr td:first-child {
-    border-radius: 16px 0 0 16px;
-}
-
-.table-cart tbody tr td:last-child {
-    border-radius: 0 16px 16px 0;
-}
+   =============================================================================
+   Interfaz del carrito con controles de cantidad y total.
+   ============================================================================= */
 
 /* Info del producto en carrito */
 .cart-product-info {
@@ -747,14 +835,14 @@ textarea.form-control-custom {
     width: 70px;
     height: 70px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
 }
 
 .cart-product-img-placeholder {
     width: 70px;
     height: 70px;
-    background: rgba(145, 186, 65, 0.1);
-    border-radius: 12px;
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-radius: var(--border-radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -762,19 +850,19 @@ textarea.form-control-custom {
 }
 
 .cart-product-details strong {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #333;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-normal);
+    color: var(--color-text);
 }
 
 .cart-price {
-    font-weight: 600;
-    color: #666;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
 }
 
 .cart-subtotal {
-    font-weight: 800;
-    color: #91ba41;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-primary);
     font-size: 1.1rem;
 }
 
@@ -784,36 +872,36 @@ textarea.form-control-custom {
     align-items: center;
     gap: 8px;
     background: rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     padding: 4px;
 }
 
 .btn-quantity {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
-    background: rgba(145, 186, 65, 0.15);
-    color: #5a7a1f;
-    font-weight: 700;
+    border-radius: var(--border-radius-sm);
+    background: rgba(var(--color-primary-rgb), 0.15);
+    color: var(--color-success);
+    font-weight: var(--font-weight-bold);
     font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
     border: none;
     padding: 0;
     line-height: 1;
 }
 
 .btn-quantity:hover {
-    background: #91ba41;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
     transform: scale(1.1);
 }
 
 .quantity-value {
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     min-width: 30px;
     text-align: center;
     font-size: 1rem;
@@ -822,7 +910,7 @@ textarea.form-control-custom {
 /* Botón eliminar */
 .btn-remove {
     background: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
+    color: var(--color-danger);
     border: none;
     width: 40px;
     height: 40px;
@@ -830,13 +918,13 @@ textarea.form-control-custom {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
     text-decoration: none;
 }
 
 .btn-remove:hover {
-    background: #dc3545;
-    color: white;
+    background: var(--color-danger);
+    color: var(--color-white);
     transform: scale(1.1);
 }
 
@@ -854,15 +942,15 @@ textarea.form-control-custom {
 }
 
 .total-label {
-    font-weight: 600;
-    color: #666;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
     font-size: 1.1rem;
 }
 
 .total-amount {
-    font-weight: 800;
+    font-weight: var(--font-weight-extrabold);
     font-size: 2rem;
-    color: #91ba41;
+    color: var(--color-primary);
     letter-spacing: -0.03em;
 }
 
@@ -875,22 +963,47 @@ textarea.form-control-custom {
     cursor: not-allowed;
 }
 
-/* Botón outline danger */
-.btn-outline-danger {
-    border-color: #dc3545;
-    color: #dc3545;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
 
-.btn-outline-danger:hover {
-    background-color: #dc3545;
-    color: white;
-}
+/* =============================================================================
+   12. MEDIA QUERIES (AGRUPADAS)
+   =============================================================================
+   Todas las reglas responsive agrupadas para mejor mantenimiento
+   y carga optimizada del CSS.
+   ============================================================================= */
 
-/* Responsive carrito */
+/* ----- Tablets y móviles grandes (≤768px) ----- */
 @media (max-width: 768px) {
+    /* Tipografía */
+    h1 { 
+        line-height: 0.95; 
+    }
+    
+    /* Navbar móvil con efecto cristal */
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        padding: 1.5rem;
+        border-radius: var(--border-radius-lg);
+        margin-top: 10px;
+        box-shadow: var(--shadow-md);
+    }
+    
+    /* Tablas */
+    .table-custom,
+    .table-cart {
+        font-size: 0.85rem;
+    }
+    
+    .product-thumb {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    /* Carrito */
     .cart-product-img,
     .cart-product-img-placeholder {
         width: 50px;
@@ -910,8 +1023,18 @@ textarea.form-control-custom {
     .total-amount {
         font-size: 1.5rem;
     }
+}
+
+/* ----- Móviles pequeños (≤576px) ----- */
+@media (max-width: 576px) {
+    /* Hero box más compacta */
+    .hero-text-box {
+        padding: clamp(1.5rem, 5vw, 3rem);
+        border-radius: 25px;
+    }
     
-    .table-cart {
-        font-size: 0.85rem;
+    /* Evita zoom en iOS al focus en inputs */
+    .form-control-custom {
+        font-size: 16px;
     }
 }
