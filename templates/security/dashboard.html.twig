@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Economik0{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="hero-text-box">
+                <h1 class="mb-4">Hola,<br><span class="zero-color">{{ app.user.firstName ?? 'Usuario' }}</span></h1>
+                <p class="lead mb-4" style="letter-spacing: -0.02em;">
+                    Bienvenido a tu panel de control. Aquí podrás ver las mejores ofertas y gestionar tu cuenta.
+                </p>
+
+                {# Mensajes Flash #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <h5>👤 Tu perfil</h5>
+                            <p class="mb-1"><strong>Nombre:</strong> {{ app.user.firstName }} {{ app.user.lastName }}</p>
+                            <p class="mb-0"><strong>Email:</strong> {{ app.user.email }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <h5>🛒 Ofertas activas</h5>
+                            <p class="mb-0">Próximamente podrás ver aquí las ofertas disponibles.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{{ path('index') }}" class="btn btn-register btn-lg">
+                        Ver Productos
+                    </a>
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary btn-lg">
+                        Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

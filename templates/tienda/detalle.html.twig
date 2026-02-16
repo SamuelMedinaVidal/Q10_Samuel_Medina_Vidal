@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ producto.nombre }} - Economik0{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="mb-4">
+        <a href="{{ path('app_tienda') }}" class="btn-back">
+            ← Volver a la tienda
+        </a>
+    </div>
+
+    <div class="hero-text-box">
+        <div class="row">
+            {# Imagen del producto #}
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="product-detail-image">
+                    {% if producto.imagen %}
+                        <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
+                             alt="{{ producto.nombre }}" 
+                             class="img-fluid rounded-4">
+                    {% else %}
+                        <div class="product-image-placeholder-large">
+                            📦
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Info del producto #}
+            <div class="col-lg-6">
+                <span class="product-category-badge">{{ producto.categoria|replace({'-': ' '})|capitalize }}</span>
+                
+                <h1 class="product-detail-title">{{ producto.nombre }}</h1>
+                
+                <div class="product-detail-price mb-3">
+                    {{ producto.precio|number_format(2, ',', '.') }} €
+                </div>
+
+                {# Stock en tiempo real #}
+                <div class="stock-info mb-4">
+                    <span class="stock-badge-large {{ producto.cantidad <= 0 ? 'stock-out' : (producto.cantidad <= 5 ? 'stock-low' : 'stock-ok') }}">
+                        {% if producto.cantidad <= 0 %}
+                            ❌ Sin stock
+                        {% elseif producto.cantidad <= 5 %}
+                            ⚠️ ¡Solo quedan {{ producto.cantidad }} unidades!
+                        {% else %}
+                            ✓ Disponible ({{ producto.cantidad }} en stock)
+                        {% endif %}
+                    </span>
+                </div>
+
+                {% if producto.descripcion %}
+                    <div class="product-description mb-4">
+                        <h5>Descripción</h5>
+                        <p>{{ producto.descripcion|nl2br }}</p>
+                    </div>
+                {% endif %}
+
+                {% if producto.ubicacion %}
+                    <div class="product-location-info mb-4">
+                        <h5>📍 Ubicación</h5>
+                        <p>{{ producto.ubicacion }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="product-seller mb-4">
+                    <h5>Vendedor</h5>
+                    <p>{{ producto.vendedor.firstName ?? 'Proveedor' }} {{ producto.vendedor.lastName ?? '' }}</p>
+                </div>
+
+                {% if producto.cantidad > 0 %}
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-register btn-lg" disabled>
+                            🛒 Añadir al carrito (Próximamente)
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        Este producto no está disponible actualmente.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# Productos relacionados #}
+    {% if relacionados|length > 0 %}
+        <div class="mt-5">
+            <h3 class="section-title mb-4">Productos <span class="zero-color">relacionados</span></h3>
+            <div class="row g-4">
+                {% for prod in relacionados %}
+                    <div class="col-6 col-md-3">
+                        <a href="{{ path('app_tienda_detalle', {id: prod.id}) }}" class="product-card-link">
+                            <div class="product-card">
+                                <div class="product-image-wrapper">
+                                    {% if prod.imagen %}
+                                        <img src="{{ asset('uploads/productos/' ~ prod.imagen) }}" 
+                                             alt="{{ prod.nombre }}" 
+                                             class="product-image">
+                                    {% else %}
+                                        <div class="product-image-placeholder">📦</div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <h5 class="product-name">{{ prod.nombre }}</h5>
+                                    <div class="product-price">{{ prod.precio|number_format(2, ',', '.') }} €</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

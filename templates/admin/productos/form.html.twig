@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titulo }} - Economik0{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="hero-text-box">
+                <div class="mb-4">
+                    <a href="{{ path('app_admin_productos') }}" class="btn-back">
+                        ← Volver al inventario
+                    </a>
+                </div>
+
+                <h1 class="mb-4">{{ titulo|split(' ')[0] }}<br><span class="zero-color">{{ titulo|split(' ')[1] ?? '' }}</span></h1>
+
+                {# Mensajes Flash #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {{ form_start(form, {'attr': {'class': 'product-form', 'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+                    
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            {{ form_label(form.nombre, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.nombre) }}
+                            {{ form_errors(form.nombre) }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form_label(form.precio, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.precio) }}
+                            {{ form_errors(form.precio) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.cantidad, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.cantidad) }}
+                            {{ form_errors(form.cantidad) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.categoria, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.categoria) }}
+                            {{ form_errors(form.categoria) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.ubicacion, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                        {{ form_widget(form.ubicacion) }}
+                        {{ form_errors(form.ubicacion) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.descripcion, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                        {{ form_widget(form.descripcion) }}
+                        {{ form_errors(form.descripcion) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.imagenFile, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                        {% if producto and producto.imagen %}
+                            <div class="current-image mb-2">
+                                <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" alt="Imagen actual" class="img-preview">
+                                <small class="text-muted d-block">Imagen actual. Sube una nueva para reemplazarla.</small>
+                            </div>
+                        {% endif %}
+                        {{ form_widget(form.imagenFile) }}
+                        {{ form_errors(form.imagenFile) }}
+                        <small class="text-muted">Formatos: JPEG, PNG, WebP. Máximo: 5MB</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            {{ form_widget(form.activo) }}
+                            {{ form_label(form.activo, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ path('app_admin_productos') }}" class="btn btn-outline-secondary btn-lg">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-register btn-lg">
+                            {{ producto ? 'Guardar Cambios' : 'Crear Producto' }}
+                        </button>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,665 @@
+/* =========================================
+   1. TIPOGRAFÍA EXTRA BOLD (IMPACTO MÁXIMO)
+   ========================================= */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-weight: 800; /* Extra Bold */
+    letter-spacing: -0.06em; /* Letras muy juntas */
+    line-height: 0.85; /* Estilo compacto original */
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
+    margin-bottom: 1.5rem;
+}
+
+.zero-color { 
+    color: #91ba41 !important; 
+    font-weight: 800; 
+}
+
+/* =========================================
+   2. FONDO NARANJA CENTRADO E INTENSO
+   ========================================= */
+.bg-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+/* El orbe central que "respira" */
+.light-orb {
+    position: absolute;
+    border-radius: 50%;
+    /* Aumentamos el brillo y tamaño */
+    width: 70vw;
+    height: 70vw;
+    max-width: 800px;
+    max-height: 800px;
+    background: radial-gradient(circle, rgba(255,100,0,0.6) 0%, rgba(255,140,0,0.2) 40%, rgba(255,255,255,0) 70%);
+    filter: blur(50px);
+    animation: pulseCenter 5s infinite ease-in-out;
+}
+
+@keyframes pulseCenter {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.4); opacity: 0.9; }
+}
+
+/* =========================================
+   3. ANIMACIÓN HAMBURGUESA A CRUZ (Navbar)
+   ========================================= */
+.navbar-toggler {
+    border: none !important;
+    padding: 0;
+    width: 30px;
+    height: 22px;
+    position: relative;
+    cursor: pointer;
+}
+
+.navbar-toggler:focus { box-shadow: none !important; }
+
+.toggler-icon {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: #212529;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    left: 0;
+}
+
+/* Posiciones iniciales */
+.top-bar { top: 0; }
+.middle-bar { top: 9px; }
+.bottom-bar { top: 18px; }
+
+/* Transformación a Cruz */
+.navbar-toggler:not(.collapsed) .top-bar {
+    top: 9px;
+    transform: rotate(135deg);
+    background: #91ba41; /* Cambia a verde al abrir */
+}
+
+.navbar-toggler:not(.collapsed) .middle-bar {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.navbar-toggler:not(.collapsed) .bottom-bar {
+    top: 9px;
+    transform: rotate(-135deg);
+    background: #91ba41;
+}
+
+/* =========================================
+   4. CAJA HERO Y BOTONES
+   ========================================= */
+.hero-text-box {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: clamp(2rem, 8vw, 5rem);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin: 0 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+}
+
+.btn-register {
+    background-color: #91ba41 !important;
+    color: white !important;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 12px 25px !important;
+    border: none;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    h1 { line-height: 0.95; }
+    .navbar-collapse {
+        background: rgba(255,255,255,0.98);
+        padding: 1.5rem;
+        border-radius: 20px;
+        margin-top: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+}
+
+/* =========================================
+   5. FORMULARIO PROVEEDOR (ESTILOS CUSTOM)
+   ========================================= */
+.proveedor-form {
+    text-align: left;
+}
+
+.form-label-custom {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.form-control-custom {
+    font-family: 'Inter', sans-serif;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-size: 1rem;
+    color: #333 !important;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom::placeholder {
+    color: rgba(100, 100, 100, 0.6);
+}
+
+.form-control-custom:focus {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: #91ba41 !important;
+    box-shadow: 0 0 0 3px rgba(145, 186, 65, 0.2) !important;
+    outline: none;
+}
+
+/* Input de archivo personalizado */
+.form-control-custom[type="file"] {
+    padding: 10px 16px !important;
+}
+
+.form-control-custom[type="file"]::-webkit-file-upload-button {
+    background: #91ba41;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: background 0.3s ease;
+}
+
+.form-control-custom[type="file"]::-webkit-file-upload-button:hover {
+    background: #7da336;
+}
+
+/* Textarea */
+textarea.form-control-custom {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Alertas personalizadas */
+.alert {
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: rgba(145, 186, 65, 0.15);
+    border: 1px solid rgba(145, 186, 65, 0.4);
+    color: #5a7a1f;
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    color: #842029;
+}
+
+/* Botón register hover */
+.btn-register:hover {
+    background-color: #7da336 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(145, 186, 65, 0.3);
+}
+
+/* Errores de formulario */
+.invalid-feedback,
+.form-error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+    .hero-text-box {
+        padding: clamp(1.5rem, 5vw, 3rem);
+        border-radius: 25px;
+    }
+    
+    .form-control-custom {
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+}
+
+/* =========================================
+   6. FORMULARIOS DE AUTENTICACIÓN
+   ========================================= */
+.auth-form {
+    text-align: left;
+}
+
+.link-login {
+    color: #91ba41;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-login:hover {
+    color: #7da336;
+    text-decoration: underline;
+}
+
+/* Checkbox personalizado */
+.form-check-input:checked {
+    background-color: #91ba41;
+    border-color: #91ba41;
+}
+
+.form-check-input:focus {
+    border-color: #91ba41;
+    box-shadow: 0 0 0 0.25rem rgba(145, 186, 65, 0.25);
+}
+
+.form-check-label {
+    font-family: 'Inter', sans-serif;
+    color: #555;
+}
+
+/* Logout link en navbar */
+.logout-link {
+    color: #dc3545 !important;
+    font-weight: 500;
+}
+
+.logout-link:hover {
+    color: #a71d2a !important;
+}
+
+/* =========================================
+   7. DASHBOARD CARDS
+   ========================================= */
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 1.5rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h5 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.dashboard-card p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Botón outline */
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   8. PANEL ADMIN - INVENTARIO
+   ========================================= */
+.table-custom {
+    background: transparent;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.table-custom thead th {
+    background: transparent;
+    border: none;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #333;
+    padding: 1rem;
+}
+
+.table-custom tbody tr {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.table-custom tbody tr:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateX(5px);
+}
+
+.table-custom tbody td {
+    border: none;
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table-custom tbody tr td:first-child {
+    border-radius: 12px 0 0 12px;
+}
+
+.table-custom tbody tr td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+.table-row-inactive {
+    opacity: 0.6;
+}
+
+.product-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-thumb-placeholder {
+    width: 50px;
+    height: 50px;
+    background: rgba(145, 186, 65, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.price-tag {
+    font-weight: 700;
+    color: #91ba41;
+}
+
+.stock-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.stock-ok { background: rgba(145, 186, 65, 0.2); color: #5a7a1f; }
+.stock-low { background: rgba(255, 193, 7, 0.2); color: #856404; }
+.stock-out { background: rgba(220, 53, 69, 0.2); color: #842029; }
+
+.btn-status-active {
+    background: rgba(145, 186, 65, 0.2);
+    color: #5a7a1f;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-status-inactive {
+    background: rgba(108, 117, 125, 0.2);
+    color: #495057;
+    border: none;
+    font-weight: 600;
+}
+
+.empty-state {
+    padding: 3rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.btn-back {
+    color: #666;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.btn-back:hover {
+    color: #91ba41;
+}
+
+.img-preview {
+    max-width: 150px;
+    border-radius: 12px;
+}
+
+/* =========================================
+   9. TIENDA - CATÁLOGO
+   ========================================= */
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.product-image-wrapper {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: rgba(145, 186, 65, 0.1);
+}
+
+.stock-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.stock-indicator.ok { background: rgba(145, 186, 65, 0.9); color: white; }
+.stock-indicator.low { background: rgba(255, 193, 7, 0.9); color: #333; }
+.stock-indicator.out { background: rgba(220, 53, 69, 0.9); color: white; }
+
+.product-info {
+    padding: 1rem;
+}
+
+.product-category {
+    font-size: 0.75rem;
+    color: #91ba41;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.product-name {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #333;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #91ba41;
+}
+
+.product-location {
+    color: #888;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+/* =========================================
+   10. TIENDA - DETALLE PRODUCTO
+   ========================================= */
+.product-detail-image {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.product-detail-image img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.product-image-placeholder-large {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    background: rgba(145, 186, 65, 0.1);
+    border-radius: 20px;
+}
+
+.product-category-badge {
+    display: inline-block;
+    background: rgba(145, 186, 65, 0.15);
+    color: #5a7a1f;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.product-detail-title {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.product-detail-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #91ba41;
+}
+
+.stock-badge-large {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.product-description h5,
+.product-location-info h5,
+.product-seller h5 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.product-description p,
+.product-location-info p,
+.product-seller p {
+    color: #666;
+}
+
+.section-title {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+/* Search form */
+.search-form {
+    text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-custom {
+        font-size: 0.85rem;
+    }
+    
+    .product-thumb {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
