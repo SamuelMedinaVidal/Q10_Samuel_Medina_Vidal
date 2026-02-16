@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mi Carrito - Economik0{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="hero-text-box">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h1 class="mb-2">Mi<br><span class="zero-color">Carrito</span></h1>
+                <p class="lead mb-0" style="letter-spacing: -0.02em;">
+                    Revisa tus productos antes de finalizar
+                </p>
+            </div>
+            <a href="{{ path('app_tienda') }}" class="btn btn-outline-secondary">
+                ← Seguir comprando
+            </a>
+        </div>
+
+        {# Mensajes Flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% if items|length > 0 %}
+            <div class="table-responsive mb-4">
+                <table class="table table-cart">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-center">Precio</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-center">Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>
+                                    <div class="cart-product-info">
+                                        {% if item.product.imagen %}
+                                            <img src="{{ asset('uploads/productos/' ~ item.product.imagen) }}" 
+                                                 alt="{{ item.product.nombre }}" 
+                                                 class="cart-product-img">
+                                        {% else %}
+                                            <div class="cart-product-img-placeholder">📦</div>
+                                        {% endif %}
+                                        <div class="cart-product-details">
+                                            <strong>{{ item.product.nombre }}</strong>
+                                            <small class="text-muted d-block">{{ item.product.categoria|replace({'-': ' '})|capitalize }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="cart-price">{{ item.product.precio|number_format(2, ',', '.') }} €</span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="quantity-controls">
+                                        <a href="{{ path('app_cart_decrease', {id: item.product.id}) }}" 
+                                           class="btn btn-quantity">−</a>
+                                        <span class="quantity-value">{{ item.quantity }}</span>
+                                        <a href="{{ path('app_cart_increase', {id: item.product.id}) }}" 
+                                           class="btn btn-quantity">+</a>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="cart-subtotal">{{ item.subtotal|number_format(2, ',', '.') }} €</span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <a href="{{ path('app_cart_remove', {id: item.product.id}) }}" 
+                                       class="btn btn-remove"
+                                       onclick="return confirm('¿Eliminar este producto del carrito?');">
+                                        🗑️
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# Total y acciones #}
+            <div class="cart-footer">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <a href="{{ path('app_cart_clear') }}" 
+                           class="btn btn-outline-danger"
+                           onclick="return confirm('¿Vaciar todo el carrito?');">
+                            🗑️ Vaciar carrito
+                        </a>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="cart-total mb-3">
+                            <span class="total-label">Total:</span>
+                            <span class="total-amount">{{ total|number_format(2, ',', '.') }} €</span>
+                        </div>
+                        <button class="btn btn-register btn-lg btn-checkout" disabled>
+                            🛒 Finalizar Compra (Próximamente)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="text-center py-5">
+                <div class="empty-state">
+                    <span class="empty-icon">🛒</span>
+                    <h3>Tu carrito está vacío</h3>
+                    <p class="text-muted">¡Añade algunos productos para empezar!</p>
+                    <a href="{{ path('app_tienda') }}" class="btn btn-register btn-lg">
+                        Ir a la tienda
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

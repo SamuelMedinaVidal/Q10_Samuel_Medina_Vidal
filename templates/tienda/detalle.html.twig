@@ -71,9 +71,9 @@
 
                 {% if producto.cantidad > 0 %}
                     <div class="d-grid gap-2">
-                        <button class="btn btn-register btn-lg" disabled>
-                            🛒 Añadir al carrito (Próximamente)
-                        </button>
+                        <a href="{{ path('app_cart_add', {id: producto.id}) }}" class="btn btn-register btn-lg">
+                            🛒 Añadir al carrito
+                        </a>
                     </div>
                 {% else %}
                     <div class="alert alert-warning">
