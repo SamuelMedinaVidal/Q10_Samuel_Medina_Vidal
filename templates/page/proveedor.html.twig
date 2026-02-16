@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Solicitud para ser Proveedor - Economik0{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="hero-text-box">
+                <h1 class="mb-4">Sé nuestro<br><span class="zero-color">Proveedor</span></h1>
+                <p class="lead mb-4" style="letter-spacing: -0.02em;">
+                    ¿Tienes productos increíbles? Únete a nuestra red de proveedores.
+                </p>
+
+                {# Mensajes Flash #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {# Formulario #}
+                {{ form_start(form, {'attr': {'class': 'proveedor-form', 'novalidate': 'novalidate'}}) }}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.FirstName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.FirstName) }}
+                            {{ form_errors(form.FirstName) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.lastName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.lastName) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.name) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.mail, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                            {{ form_widget(form.mail) }}
+                            {{ form_errors(form.mail) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.message, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                        {{ form_widget(form.message) }}
+                        {{ form_errors(form.message) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(form.img, null, {'label_attr': {'class': 'form-label-custom'}}) }}
+                        {{ form_widget(form.img) }}
+                        {{ form_errors(form.img) }}
+                        <small class="text-muted d-block mt-1">Formatos aceptados: JPEG, PNG. Tamaño máximo: 5MB</small>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-register btn-lg">
+                            Enviar Solicitud
+                        </button>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mi Inventario - Economik0{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="hero-text-box">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h1 class="mb-2">Mi<br><span class="zero-color">Inventario</span></h1>
+                <p class="lead mb-0" style="letter-spacing: -0.02em;">
+                    Gestiona tus productos y controla tu stock
+                </p>
+            </div>
+            <a href="{{ path('app_admin_producto_nuevo') }}" class="btn btn-register btn-lg">
+                + Añadir Producto
+            </a>
+        </div>
+
+        {# Mensajes Flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% if productos|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                            <tr class="{{ not producto.activo ? 'table-row-inactive' : '' }}">
+                                <td>
+                                    {% if producto.imagen %}
+                                        <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
+                                             alt="{{ producto.nombre }}" 
+                                             class="product-thumb">
+                                    {% else %}
+                                        <div class="product-thumb-placeholder">
+                                            📦
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <strong>{{ producto.nombre }}</strong>
+                                    {% if producto.ubicacion %}
+                                        <br><small class="text-muted">📍 {{ producto.ubicacion }}</small>
+                                    {% endif %}
+                                </td>
+                                <td><span class="price-tag">{{ producto.precio|number_format(2, ',', '.') }} €</span></td>
+                                <td>
+                                    <span class="stock-badge {{ producto.cantidad <= 0 ? 'stock-out' : (producto.cantidad <= 5 ? 'stock-low' : 'stock-ok') }}">
+                                        {{ producto.cantidad }} uds
+                                    </span>
+                                </td>
+                                <td>{{ producto.categoria|replace({'-': ' '})|capitalize }}</td>
+                                <td>
+                                    <form action="{{ path('app_admin_producto_toggle', {id: producto.id}) }}" method="post" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ producto.id) }}">
+                                        <button type="submit" class="btn btn-sm {{ producto.activo ? 'btn-status-active' : 'btn-status-inactive' }}">
+                                            {{ producto.activo ? '✓ Activo' : '✗ Inactivo' }}
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_admin_producto_editar', {id: producto.id}) }}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            ✏️ Editar
+                                        </a>
+                                        <form action="{{ path('app_admin_producto_eliminar', {id: producto.id}) }}" 
+                                              method="post" 
+                                              class="d-inline"
+                                              onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ producto.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                🗑️ Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="empty-state">
+                    <span class="empty-icon">📦</span>
+                    <h3>No tienes productos todavía</h3>
+                    <p class="text-muted">Empieza añadiendo tu primer producto al inventario</p>
+                    <a href="{{ path('app_admin_producto_nuevo') }}" class="btn btn-register">
+                        Añadir mi primer producto
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

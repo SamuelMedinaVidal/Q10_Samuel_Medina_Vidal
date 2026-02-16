@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Iniciar Sesión - Economik0{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+            <div class="hero-text-box">
+                <h1 class="mb-4">Bienvenido<br><span class="zero-color">de nuevo</span></h1>
+                <p class="lead mb-4" style="letter-spacing: -0.02em;">
+                    Accede a tu cuenta para ver las mejores ofertas.
+                </p>
+
+                {# Mensajes Flash #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {# Error de autenticación #}
+                {% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                {% endif %}
+
+                {# Formulario de Login #}
+                <form class="auth-form" method="post" novalidate>
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label-custom">Correo electrónico</label>
+                        <input type="email" 
+                               value="{{ last_username }}" 
+                               name="email" 
+                               id="inputEmail" 
+                               class="form-control form-control-custom" 
+                               placeholder="tu@email.com"
+                               autocomplete="email" 
+                               required 
+                               autofocus>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="inputPassword" class="form-label-custom">Contraseña</label>
+                        <input type="password" 
+                               name="password" 
+                               id="inputPassword" 
+                               class="form-control form-control-custom" 
+                               placeholder="Tu contraseña"
+                               autocomplete="current-password" 
+                               required>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-register btn-lg">
+                            Iniciar Sesión
+                        </button>
+                    </div>
+
+                    <p class="text-center mb-0" style="color: #666;">
+                        ¿No tienes cuenta? 
+                        <a href="{{ path('app_register') }}" class="link-login">Regístrate</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

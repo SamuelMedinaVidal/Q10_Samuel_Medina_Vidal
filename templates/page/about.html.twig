@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Economik0 - Quiénes Somos{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row min-vh-100 align-items-center justify-content-center">
+        <div class="col-lg-10">
+            <div class="hero-text-box">
+                <h1 class="display-3 fw-bold mb-4">Nuestra <span class="zero-color">Misión</span></h1>
+                
+                <div class="row text-start mt-5">
+                    <div class="col-md-6 mb-4">
+                        <h3 class="fw-bold">¿Qué es Economik0?</h3>
+                        <p class="text-secondary fs-5">
+                            Somos una plataforma nacida para eliminar las barreras entre el productor local y el consumidor final. Creemos en un comercio donde el 0 representa **cero intermediarios**.
+                        </p>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h3 class="fw-bold">Por qué elegirnos</h3>
+                        <p class="text-secondary fs-5">
+                            Al comprar aquí, aseguras que el 100% del valor llegue al agricultor o ganadero, garantizando productos más frescos y precios más justos para tu bolsillo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-top">
+                    <p class="lead italic text-muted">"Revolucionando el consumo local, un prisma a la vez."</p>
+                    <a href="{{ path('index') }}" class="btn btn-outline-dark mt-3">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

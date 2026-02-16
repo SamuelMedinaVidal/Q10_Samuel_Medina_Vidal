@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand logo-economik0" href="/">
+            <img src="{{ asset('img/Economik0_icon.png') }}" alt="Logo" width="40" class="me-2">
+            <span>Economik<span class="zero-color">0</span></span>
+        </a>
+        
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="toggler-icon top-bar"></span>
+            <span class="toggler-icon middle-bar"></span>
+            <span class="toggler-icon bottom-bar"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{{ path('about') }}">Quiénes Somos</a>
+                </li>
+
+                {% if app.user %}
+                    {# ========== USUARIO AUTENTICADO ========== #}
+                    
+                    {% if is_granted('ROLE_PROVEEDOR') %}
+                        {# ----- PROVEEDOR ----- #}
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ path('app_admin_productos') }}">
+                                📦 Mi Inventario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-register ms-lg-3" href="{{ path('app_admin_producto_nuevo') }}">
+                                + Añadir Producto
+                            </a>
+                        </li>
+                    {% else %}
+                        {# ----- CLIENTE (ROLE_USER) ----- #}
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ path('app_tienda') }}">
+                                🛒 Tienda
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-register ms-lg-3" href="#">
+                                📋 Mis Pedidos
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {# Común para todos los usuarios autenticados #}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 logout-link" href="{{ path('app_logout') }}">
+                            Cerrar Sesión
+                        </a>
+                    </li>
+
+                {% else %}
+                    {# ========== USUARIO ANÓNIMO ========== #}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ path('app_proveedor') }}">Soy Proveedor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ path('app_login') }}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-register ms-lg-3" href="{{ path('app_register') }}">Registro</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
