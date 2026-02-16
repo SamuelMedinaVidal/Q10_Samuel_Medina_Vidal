@@ -74,14 +74,9 @@ class ProductType extends AbstractType
                 'choices' => [
                     'Frutas y Verduras' => 'frutas-verduras',
                     'Carnes y Embutidos' => 'carnes-embutidos',
-                    'Pescados y Mariscos' => 'pescados-mariscos',
                     'Lácteos y Huevos' => 'lacteos-huevos',
                     'Panadería y Bollería' => 'panaderia-bolleria',
-                    'Bebidas' => 'bebidas',
-                    'Conservas y Enlatados' => 'conservas-enlatados',
-                    'Congelados' => 'congelados',
-                    'Limpieza y Hogar' => 'limpieza-hogar',
-                    'Otros' => 'otros'
+                    'Conservas y Enlatados' => 'conservas-enlatados'
                 ],
                 'placeholder' => 'Selecciona una categoría',
                 'constraints' => [
