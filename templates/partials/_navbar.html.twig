@@ -1,19 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+{# ===================================================================== #}
+{#  Barra de navegación principal - Accesibilidad WCAG 2.1 AA          #}
+{# ===================================================================== #}
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" role="navigation" aria-label="Navegación principal">
     <div class="container-fluid">
-        <a class="navbar-brand logo-economik0" href="/">
-            <img src="{{ asset('img/Economik0_icon.png') }}" alt="Logo" width="40" class="me-2">
-            <span>Economik<span class="zero-color">0</span></span>
+        {# Logo con alt descriptivo #}
+        <a class="navbar-brand logo-economik0" href="/" aria-label="Economik0 - Ir a inicio">
+            <img src="{{ asset('img/Economik0_icon.png') }}" alt="Logo de Economik0" width="40" height="40" class="me-2">
+            <span aria-hidden="true">Economik<span class="zero-color">0</span></span>
         </a>
         
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="toggler-icon top-bar"></span>
-            <span class="toggler-icon middle-bar"></span>
-            <span class="toggler-icon bottom-bar"></span>
+        {# Botón hamburguesa accesible #}
+        <button class="navbar-toggler collapsed" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" 
+                aria-expanded="false" 
+                aria-label="Abrir menú de navegación">
+            <span class="toggler-icon top-bar" aria-hidden="true"></span>
+            <span class="toggler-icon middle-bar" aria-hidden="true"></span>
+            <span class="toggler-icon bottom-bar" aria-hidden="true"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link px-3" href="{{ path('about') }}">Quiénes Somos</a>
+            <ul class="navbar-nav ms-auto align-items-center" role="menubar">
+                <li class="nav-item" role="none">
+                    <a class="nav-link px-3" href="{{ path('about') }}" role="menuitem">
+                        Quiénes Somos
+                    </a>
                 </li>
 
                 {% if app.user %}
@@ -21,51 +35,66 @@
                     
                     {% if is_granted('ROLE_PROVEEDOR') %}
                         {# ----- PROVEEDOR ----- #}
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="{{ path('app_admin_productos') }}">
-                                📦 Mi Inventario
+                        <li class="nav-item" role="none">
+                            <a class="nav-link px-3" href="{{ path('app_admin_productos') }}" role="menuitem">
+                                <span aria-hidden="true">📦</span>
+                                <span class="nav-text">Mi Inventario</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn btn-register ms-lg-3" href="{{ path('app_admin_producto_nuevo') }}">
-                                + Añadir Producto
+                        <li class="nav-item" role="none">
+                            <a class="btn btn-register ms-lg-3" href="{{ path('app_admin_producto_nuevo') }}" role="menuitem">
+                                <span aria-hidden="true">+</span> Añadir Producto
                             </a>
                         </li>
                     {% else %}
                         {# ----- CLIENTE (ROLE_USER) ----- #}
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="{{ path('app_tienda') }}">
-                                �️ Tienda
+                        <li class="nav-item" role="none">
+                            <a class="nav-link px-3" href="{{ path('app_tienda') }}" role="menuitem">
+                                <span aria-hidden="true">🛍️</span>
+                                <span class="nav-text">Tienda</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 cart-link" href="{{ path('app_cart') }}">
-                                🛒 Carrito
-                                {% set cartCount = app.session.get('cart')|default({})|reduce((carry, v) => carry + v, 0) %}
+                        <li class="nav-item" role="none">
+                            {% set cartCount = app.session.get('cart')|default({})|reduce((carry, v) => carry + v, 0) %}
+                            <a class="nav-link px-3 cart-link" 
+                               href="{{ path('app_cart') }}" 
+                               role="menuitem"
+                               aria-label="Carrito de compras{% if cartCount > 0 %}, {{ cartCount }} artículo{% if cartCount > 1 %}s{% endif %}{% endif %}">
+                                <span aria-hidden="true">🛒</span>
+                                <span class="nav-text">Carrito</span>
                                 {% if cartCount > 0 %}
-                                    <span class="cart-badge">{{ cartCount }}</span>
+                                    <span class="cart-badge" aria-hidden="true">{{ cartCount }}</span>
                                 {% endif %}
                             </a>
                         </li>
                     {% endif %}
 
                     {# Común para todos los usuarios autenticados #}
-                    <li class="nav-item">
-                        <a class="nav-link px-3 logout-link" href="{{ path('app_logout') }}">
+                    <li class="nav-item" role="none">
+                        <a class="nav-link px-3 logout-link" 
+                           href="{{ path('app_logout') }}" 
+                           role="menuitem"
+                           aria-label="Cerrar sesión de {{ app.user.email }}">
                             Cerrar Sesión
                         </a>
                     </li>
 
                 {% else %}
                     {# ========== USUARIO ANÓNIMO ========== #}
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ path('app_proveedor') }}">Soy Proveedor</a>
+                    <li class="nav-item" role="none">
+                        <a class="nav-link px-3" href="{{ path('app_proveedor') }}" role="menuitem">
+                            Soy Proveedor
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ path('app_login') }}">Iniciar Sesión</a>
+                    <li class="nav-item" role="none">
+                        <a class="nav-link px-3" href="{{ path('app_login') }}" role="menuitem">
+                            Iniciar Sesión
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-register ms-lg-3" href="{{ path('app_register') }}">Registro</a>
+                    <li class="nav-item" role="none">
+                        <a class="btn btn-register ms-lg-3" href="{{ path('app_register') }}" role="menuitem">
+                            Registro
+                        </a>
                     </li>
                 {% endif %}
             </ul>

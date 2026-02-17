@@ -1,53 +1,82 @@
+{# ===================================================================== #}
+{#  Dashboard de usuario - Accesibilidad WCAG 2.1 AA                    #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard - Economik0{% endblock %}
+{% block title %}Mi Panel - Economik0{% endblock %}
 
 {% block body %}
-<div class="container">
+<section class="container py-5" aria-labelledby="dashboard-heading">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <div class="hero-text-box">
-                <h1 class="mb-4">Hola,<br><span class="zero-color">{{ app.user.firstName ?? 'Usuario' }}</span></h1>
-                <p class="lead mb-4" style="letter-spacing: -0.02em;">
-                    Bienvenido a tu panel de control. Aquí podrás ver las mejores ofertas y gestionar tu cuenta.
-                </p>
+        <div class="col-lg-8">
+            <article class="card glass-card shadow-lg p-4">
+                {# ========== ENCABEZADO ========== #}
+                <header class="card-body text-center">
+                    <h1 id="dashboard-heading" class="card-title fw-bold">
+                        ¡Bienvenido, <span class="text-accent">{{ app.user.email }}</span>!
+                    </h1>
+                    <p class="text-muted">Panel de control de tu cuenta</p>
+                </header>
 
-                {# Mensajes Flash #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
+                {# ========== INFORMACIÓN DEL USUARIO ========== #}
+                <section aria-labelledby="info-heading" class="card-body">
+                    <h2 id="info-heading" class="h4 fw-bold mb-4">
+                        <span aria-hidden="true">👤</span>
+                        Tu Información
+                    </h2>
+                    
+                    <dl class="row">
+                        <dt class="col-sm-4 text-muted">Correo electrónico:</dt>
+                        <dd class="col-sm-8 fw-semibold">{{ app.user.email }}</dd>
+                        
+                        <dt class="col-sm-4 text-muted">Tipo de cuenta:</dt>
+                        <dd class="col-sm-8">
+                            {% if is_granted('ROLE_PROVEEDOR') %}
+                                <span class="badge bg-success fs-6">
+                                    <span aria-hidden="true">🌾</span>
+                                    Proveedor
+                                </span>
+                            {% else %}
+                                <span class="badge bg-primary fs-6">
+                                    <span aria-hidden="true">🛒</span>
+                                    Cliente
+                                </span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </section>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6">
-                        <div class="dashboard-card">
-                            <h5>👤 Tu perfil</h5>
-                            <p class="mb-1"><strong>Nombre:</strong> {{ app.user.firstName }} {{ app.user.lastName }}</p>
-                            <p class="mb-0"><strong>Email:</strong> {{ app.user.email }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="dashboard-card">
-                            <h5>🛒 Ofertas activas</h5>
-                            <p class="mb-0">Próximamente podrás ver aquí las ofertas disponibles.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <a href="{{ path('index') }}" class="btn btn-register btn-lg">
-                        Ver Productos
-                    </a>
-                    <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary btn-lg">
-                        Cerrar Sesión
-                    </a>
-                </div>
-            </div>
+                {# ========== ACCIONES RÁPIDAS ========== #}
+                <section aria-labelledby="acciones-heading" class="card-body border-top">
+                    <h2 id="acciones-heading" class="h4 fw-bold mb-4">
+                        <span aria-hidden="true">⚡</span>
+                        Acciones Rápidas
+                    </h2>
+                    
+                    <nav aria-label="Acciones del dashboard" class="d-flex flex-wrap gap-3">
+                        {% if is_granted('ROLE_PROVEEDOR') %}
+                            <a href="{{ path('app_admin_productos') }}" class="btn btn-primary">
+                                <span aria-hidden="true">📦</span>
+                                Mi Inventario
+                            </a>
+                            <a href="{{ path('app_admin_producto_nuevo') }}" class="btn btn-outline-primary">
+                                <span aria-hidden="true">+</span>
+                                Añadir Producto
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_tienda') }}" class="btn btn-primary">
+                                <span aria-hidden="true">🛍️</span>
+                                Ir a la Tienda
+                            </a>
+                            <a href="{{ path('app_cart') }}" class="btn btn-outline-primary">
+                                <span aria-hidden="true">🛒</span>
+                                Mi Carrito
+                            </a>
+                        {% endif %}
+                    </nav>
+                </section>
+            </article>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

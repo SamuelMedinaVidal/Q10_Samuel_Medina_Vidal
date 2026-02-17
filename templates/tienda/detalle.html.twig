@@ -1,117 +1,154 @@
+{# ===================================================================== #}
+{#  Detalle del producto - Accesibilidad WCAG 2.1 AA                    #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ producto.nombre }} - Economik0{% endblock %}
 
 {% block body %}
-<div class="container py-4">
-    <div class="mb-4">
-        <a href="{{ path('app_tienda') }}" class="btn-back">
-            ← Volver a la tienda
-        </a>
-    </div>
-
-    <div class="hero-text-box">
-        <div class="row">
-            {# Imagen del producto #}
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="product-detail-image">
-                    {% if producto.imagen %}
-                        <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
-                             alt="{{ producto.nombre }}" 
-                             class="img-fluid rounded-4">
-                    {% else %}
-                        <div class="product-image-placeholder-large">
-                            📦
-                        </div>
-                    {% endif %}
-                </div>
+<article class="container py-5" aria-labelledby="producto-heading">
+    {# ========== MENSAJES FLASH ACCESIBLES ========== #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" 
+                 role="alert" 
+                 aria-live="polite">
+                <span>{{ message }}</span>
+                <button type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="alert" 
+                        aria-label="Cerrar mensaje de alerta"></button>
             </div>
+        {% endfor %}
+    {% endfor %}
 
-            {# Info del producto #}
-            <div class="col-lg-6">
-                <span class="product-category-badge">{{ producto.categoria|replace({'-': ' '})|capitalize }}</span>
-                
-                <h1 class="product-detail-title">{{ producto.nombre }}</h1>
-                
-                <div class="product-detail-price mb-3">
-                    {{ producto.precio|number_format(2, ',', '.') }} €
-                </div>
+    {# ========== NAVEGACIÓN (Breadcrumb) ========== #}
+    <nav aria-label="Ruta de navegación" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_tienda') }}">Tienda</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ producto.nombre }}
+            </li>
+        </ol>
+    </nav>
 
-                {# Stock en tiempo real #}
-                <div class="stock-info mb-4">
-                    <span class="stock-badge-large {{ producto.cantidad <= 0 ? 'stock-out' : (producto.cantidad <= 5 ? 'stock-low' : 'stock-ok') }}">
-                        {% if producto.cantidad <= 0 %}
-                            ❌ Sin stock
-                        {% elseif producto.cantidad <= 5 %}
-                            ⚠️ ¡Solo quedan {{ producto.cantidad }} unidades!
-                        {% else %}
-                            ✓ Disponible ({{ producto.cantidad }} en stock)
-                        {% endif %}
-                    </span>
-                </div>
-
-                {% if producto.descripcion %}
-                    <div class="product-description mb-4">
-                        <h5>Descripción</h5>
-                        <p>{{ producto.descripcion|nl2br }}</p>
-                    </div>
-                {% endif %}
-
-                {% if producto.ubicacion %}
-                    <div class="product-location-info mb-4">
-                        <h5>📍 Ubicación</h5>
-                        <p>{{ producto.ubicacion }}</p>
-                    </div>
-                {% endif %}
-
-                <div class="product-seller mb-4">
-                    <h5>Vendedor</h5>
-                    <p>{{ producto.vendedor.firstName ?? 'Proveedor' }} {{ producto.vendedor.lastName ?? '' }}</p>
-                </div>
-
-                {% if producto.cantidad > 0 %}
-                    <div class="d-grid gap-2">
-                        <a href="{{ path('app_cart_add', {id: producto.id}) }}" class="btn btn-register btn-lg">
-                            🛒 Añadir al carrito
-                        </a>
-                    </div>
+    {# ========== CONTENIDO PRINCIPAL ========== #}
+    <div class="row g-5">
+        {# ----- Imagen del producto ----- #}
+        <div class="col-lg-6">
+            <figure class="product-detail-figure">
+                {% if producto.imagen %}
+                    <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
+                         class="img-fluid rounded shadow product-detail-img" 
+                         alt="Imagen detallada de {{ producto.nombre }}"
+                         width="600"
+                         height="400">
                 {% else %}
-                    <div class="alert alert-warning">
-                        Este producto no está disponible actualmente.
+                    <div class="product-detail-placeholder d-flex align-items-center justify-content-center bg-light rounded shadow" 
+                         role="img" 
+                         aria-label="Sin imagen disponible para {{ producto.nombre }}"
+                         style="min-height: 400px;">
+                        <span aria-hidden="true" class="display-1 text-muted">📦</span>
                     </div>
                 {% endif %}
-            </div>
+                <figcaption class="visually-hidden">
+                    Imagen del producto {{ producto.nombre }}
+                </figcaption>
+            </figure>
+        </div>
+
+        {# ----- Información del producto ----- #}
+        <div class="col-lg-6">
+            <header>
+                <h1 id="producto-heading" class="display-5 fw-bold mb-3">
+                    {{ producto.nombre }}
+                </h1>
+                <p class="badge bg-secondary fs-6 mb-3">
+                    <span class="visually-hidden">Categoría:</span>
+                    {{ producto.categoria }}
+                </p>
+            </header>
+
+            <section aria-labelledby="descripcion-heading">
+                <h2 id="descripcion-heading" class="visually-hidden">Descripción</h2>
+                <p class="lead text-muted mb-4">{{ producto.descripcion }}</p>
+            </section>
+
+            {# Información de stock #}
+            <section aria-labelledby="disponibilidad-heading" class="mb-4">
+                <h2 id="disponibilidad-heading" class="visually-hidden">Disponibilidad</h2>
+                {% if producto.cantidad > 0 %}
+                    <p class="text-success fw-semibold" role="status">
+                        <span aria-hidden="true">✅</span>
+                        En stock: {{ producto.cantidad }} unidades disponibles
+                    </p>
+                {% else %}
+                    <p class="text-danger fw-semibold" role="status">
+                        <span aria-hidden="true">❌</span>
+                        Sin stock disponible
+                    </p>
+                {% endif %}
+            </section>
+
+            {# Precio destacado #}
+            <section aria-labelledby="precio-heading" class="mb-4">
+                <h2 id="precio-heading" class="visually-hidden">Precio</h2>
+                <p class="display-4 fw-bold text-primary">
+                    {{ producto.precio|number_format(2, ',', '.') }} €
+                </p>
+            </section>
+
+            {# ========== FORMULARIO AÑADIR AL CARRITO ========== #}
+            {% if producto.cantidad > 0 %}
+                <section aria-labelledby="carrito-heading">
+                    <h2 id="carrito-heading" class="visually-hidden">Añadir al carrito</h2>
+                    <form action="{{ path('app_cart_add', {id: producto.id}) }}" 
+                          method="post"
+                          class="d-flex gap-3 align-items-end flex-wrap"
+                          aria-label="Formulario para añadir {{ producto.nombre }} al carrito">
+                        
+                        <div class="flex-grow-1" style="max-width: 150px;">
+                            <label for="cantidad-input" class="form-label fw-semibold">
+                                Cantidad
+                            </label>
+                            <input type="number" 
+                                   id="cantidad-input"
+                                   name="cantidad" 
+                                   class="form-control form-control-lg" 
+                                   value="1" 
+                                   min="1" 
+                                   max="{{ producto.cantidad }}"
+                                   aria-describedby="cantidad-help"
+                                   required
+                                   aria-required="true">
+                            <small id="cantidad-help" class="form-text text-muted">
+                                Máximo: {{ producto.cantidad }}
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+                            <span aria-hidden="true">🛒</span>
+                            Añadir al Carrito
+                        </button>
+                    </form>
+                </section>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <span aria-hidden="true">⚠️</span>
+                    Este producto no está disponible actualmente.
+                </div>
+            {% endif %}
+
+            {# Enlace para volver #}
+            <nav aria-label="Navegación secundaria" class="mt-5">
+                <a href="{{ path('app_tienda') }}" class="btn btn-outline-secondary">
+                    <span aria-hidden="true">←</span>
+                    Volver a la tienda
+                </a>
+            </nav>
         </div>
     </div>
-
-    {# Productos relacionados #}
-    {% if relacionados|length > 0 %}
-        <div class="mt-5">
-            <h3 class="section-title mb-4">Productos <span class="zero-color">relacionados</span></h3>
-            <div class="row g-4">
-                {% for prod in relacionados %}
-                    <div class="col-6 col-md-3">
-                        <a href="{{ path('app_tienda_detalle', {id: prod.id}) }}" class="product-card-link">
-                            <div class="product-card">
-                                <div class="product-image-wrapper">
-                                    {% if prod.imagen %}
-                                        <img src="{{ asset('uploads/productos/' ~ prod.imagen) }}" 
-                                             alt="{{ prod.nombre }}" 
-                                             class="product-image">
-                                    {% else %}
-                                        <div class="product-image-placeholder">📦</div>
-                                    {% endif %}
-                                </div>
-                                <div class="product-info">
-                                    <h5 class="product-name">{{ prod.nombre }}</h5>
-                                    <div class="product-price">{{ prod.precio|number_format(2, ',', '.') }} €</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-</div>
+</article>
 {% endblock %}

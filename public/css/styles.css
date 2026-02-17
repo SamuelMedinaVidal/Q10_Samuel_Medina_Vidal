@@ -111,6 +111,11 @@ h1 {
     font-weight: var(--font-weight-extrabold); 
 }
 
+/* Clase para resaltar palabras en títulos (última palabra verde) */
+.text-accent {
+    color: var(--color-primary) !important;
+}
+
 
 /* =============================================================================
    3. FONDO ANIMADO (ORBES)
@@ -407,10 +412,51 @@ textarea.form-control-custom {
    7. BOTONES
    =============================================================================
    Sistema de botones coherente con la identidad visual.
-   El botón principal (register) usa el verde corporativo.
+   El botón principal usa el verde corporativo Economik0.
    ============================================================================= */
 
-/* Botón principal verde */
+/* Botón principal verde (Bootstrap override) */
+.btn-primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-normal);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--color-primary-dark) !important;
+    border-color: var(--color-primary-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.btn-primary:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Botón outline primary verde */
+.btn-outline-primary {
+    border-color: var(--color-primary) !important;
+    color: var(--color-primary) !important;
+    border-radius: var(--border-radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    transform: translateY(-2px);
+}
+
+/* Botón registro (mismo estilo que primary para consistencia) */
 .btn-register {
     background-color: var(--color-primary) !important;
     color: var(--color-white) !important;
@@ -1038,3 +1084,198 @@ textarea.form-control-custom {
         font-size: 16px;
     }
 }
+
+
+/* =============================================================================
+   13. ACCESIBILIDAD - WCAG 2.1 NIVEL AA
+   =============================================================================
+   Estilos específicos para mejorar la accesibilidad:
+   - Skip link para navegación por teclado
+   - Estados de focus visibles
+   - Contraste mejorado
+   - Indicadores de estado accesibles
+   ============================================================================= */
+
+/* --- Skip Link (Saltar al contenido) --- 
+   Visible solo con foco del teclado para usuarios de tecnologías asistivas */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 1rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: 10px;
+    outline: 3px solid var(--color-text);
+    outline-offset: 2px;
+}
+
+/* --- Estados de Focus Visibles ---
+   Cumple WCAG 2.4.7: Focus visible obligatorio */
+
+/* Focus general para elementos interactivos */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+}
+
+/* Focus específico para botones */
+.btn:focus-visible {
+    outline: 3px solid var(--color-primary-dark);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.25);
+}
+
+/* Focus para inputs de formulario */
+.form-control:focus-visible,
+.form-select:focus-visible {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+    outline: none;
+}
+
+/* Focus para enlaces de navegación */
+.nav-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: var(--border-radius-sm);
+    background: rgba(var(--color-primary-rgb), 0.1);
+}
+
+/* Focus para cards de productos */
+.product-card:focus-within {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* --- Contraste Mejorado ---
+   Cumple WCAG 1.4.3: Contraste mínimo 4.5:1 */
+
+/* Texto sobre fondos claros */
+.text-muted {
+    color: #545454 !important; /* Contraste 4.6:1 sobre blanco */
+}
+
+/* Placeholder con mejor contraste */
+::placeholder {
+    color: #6c6c6c;
+    opacity: 1;
+}
+
+/* Links con contraste mejorado */
+a {
+    color: #5a7a1f; /* Verde más oscuro para contraste 4.5:1 */
+}
+
+a:hover,
+a:focus {
+    color: #3d5214;
+}
+
+/* --- Indicadores de Estado Accesibles --- */
+
+/* Campos de formulario con error */
+.form-control.is-invalid,
+input[aria-invalid="true"] {
+    border-color: var(--color-danger);
+    border-width: 2px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+.form-control.is-invalid:focus,
+input[aria-invalid="true"]:focus {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+}
+
+/* Campos requeridos */
+.form-label[for] + input[aria-required="true"],
+input[required] {
+    border-left: 3px solid var(--color-primary);
+}
+
+/* --- Textos Accesibles para Lectores de Pantalla --- */
+
+/* Clase utilitaria para ocultar visualmente pero mantener accesible */
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* --- Animaciones Reducidas ---
+   Cumple WCAG 2.3.3: Respeta preferencias del usuario */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .light-orb {
+        animation: none;
+        opacity: 0.6;
+    }
+}
+
+/* --- Alto Contraste ---
+   Soporte para modo de alto contraste del sistema */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: 2px solid #000;
+    }
+    
+    .btn-primary {
+        background-color: #000;
+        border: 2px solid #000;
+        color: #fff;
+    }
+    
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #333;
+    }
+    
+    a:focus-visible,
+    button:focus-visible {
+        outline: 4px solid #000;
+        outline-offset: 2px;
+    }
+}
+
+/* --- Mejoras para Modo Oscuro del Sistema --- */
+@media (prefers-color-scheme: dark) {
+    /* Preparado para futura implementación de tema oscuro */
+    /* Por ahora se mantiene el tema claro para consistencia */
+}
+

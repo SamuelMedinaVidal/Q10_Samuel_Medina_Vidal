@@ -1,103 +1,157 @@
+{# ===================================================================== #}
+{#  Catálogo de la tienda - Accesibilidad WCAG 2.1 AA                   #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Tienda - Economik0{% endblock %}
 
 {% block body %}
-<div class="container py-4">
-    {# Buscador y filtros #}
-    <div class="hero-text-box mb-4">
-        <h1 class="mb-3">Nuestra<br><span class="zero-color">Tienda</span></h1>
-        <p class="lead mb-4" style="letter-spacing: -0.02em;">
-            Descubre los mejores productos cerca de ti
-        </p>
+<section class="container py-5" aria-labelledby="tienda-heading">
+    {# ========== ENCABEZADO ========== #}
+    <header class="text-center mb-5">
+        <h1 id="tienda-heading" class="display-4 fw-bold">
+            Nuestra <span class="text-accent">Tienda</span>
+        </h1>
+        <p class="lead text-muted">Productos frescos directamente del productor</p>
+    </header>
 
-        <form action="{{ path('app_tienda') }}" method="get" class="search-form">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-6">
-                    <label class="form-label-custom">Buscar producto</label>
-                    <input type="text" 
-                           name="q" 
-                           value="{{ query }}" 
-                           class="form-control form-control-custom" 
-                           placeholder="🔍 Buscar por nombre...">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label-custom">Categoría</label>
-                    <select name="categoria" class="form-control form-control-custom">
-                        <option value="">Todas las categorías</option>
-                        {% for cat in categorias %}
-                            <option value="{{ cat }}" {{ categoriaActual == cat ? 'selected' : '' }}>
-                                {{ cat|replace({'-': ' '})|capitalize }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-register w-100">Buscar</button>
-                </div>
+    {# ========== MENSAJES FLASH ACCESIBLES ========== #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" 
+                 role="alert" 
+                 aria-live="polite">
+                <span>{{ message }}</span>
+                <button type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="alert" 
+                        aria-label="Cerrar mensaje de alerta"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# ========== BUSCADOR ACCESIBLE ========== #}
+    <section aria-labelledby="busqueda-heading" class="mb-5">
+        <h2 id="busqueda-heading" class="visually-hidden">Búsqueda de productos</h2>
+        <form method="get" 
+              action="{{ path('app_tienda') }}" 
+              class="row g-3 align-items-end justify-content-center"
+              role="search"
+              aria-label="Buscar productos en la tienda">
+            
+            {# Campo de búsqueda #}
+            <div class="col-md-5">
+                <label for="search-query" class="form-label fw-semibold">
+                    Buscar producto
+                </label>
+                <input type="search" 
+                       id="search-query"
+                       name="q" 
+                       class="form-control form-control-lg" 
+                       placeholder="Ej: manzanas, leche..." 
+                       value="{{ q|default('') }}"
+                       aria-describedby="search-help"
+                       autocomplete="off">
+                <small id="search-help" class="form-text text-muted visually-hidden">
+                    Escribe el nombre del producto que deseas buscar
+                </small>
+            </div>
+            
+            {# Filtro por categoría #}
+            <div class="col-md-3">
+                <label for="search-categoria" class="form-label fw-semibold">
+                    Categoría
+                </label>
+                <select id="search-categoria" 
+                        name="categoria" 
+                        class="form-select form-select-lg"
+                        aria-describedby="categoria-help">
+                    <option value="">Todas las categorías</option>
+                    {% for cat in categorias|default([]) %}
+                        <option value="{{ cat }}" {% if cat == categoria|default('') %}selected{% endif %}>
+                            {{ cat }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <small id="categoria-help" class="form-text text-muted visually-hidden">
+                    Filtra productos por categoría
+                </small>
+            </div>
+            
+            {# Botón de búsqueda #}
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <span aria-hidden="true">🔍</span>
+                    <span>Buscar</span>
+                </button>
             </div>
         </form>
+    </section>
 
-        {% if query or categoriaActual %}
-            <div class="mt-3">
-                <a href="{{ path('app_tienda') }}" class="btn btn-sm btn-outline-secondary">
-                    ✕ Limpiar filtros
-                </a>
-                {% if query %}
-                    <span class="badge bg-light text-dark ms-2">Búsqueda: "{{ query }}"</span>
-                {% endif %}
-                {% if categoriaActual %}
-                    <span class="badge bg-light text-dark ms-2">Categoría: {{ categoriaActual|replace({'-': ' '})|capitalize }}</span>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
-
-    {# Grid de productos #}
-    {% if productos|length > 0 %}
-        <div class="row g-4">
-            {% for producto in productos %}
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="{{ path('app_tienda_detalle', {id: producto.id}) }}" class="product-card-link">
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                {% if producto.imagen %}
-                                    <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
-                                         alt="{{ producto.nombre }}" 
-                                         class="product-image">
-                                {% else %}
-                                    <div class="product-image-placeholder">
-                                        📦
-                                    </div>
-                                {% endif %}
-                                <span class="stock-indicator {{ producto.cantidad <= 0 ? 'out' : (producto.cantidad <= 5 ? 'low' : 'ok') }}">
-                                    {{ producto.stockStatus }}
-                                </span>
-                            </div>
-                            <div class="product-info">
-                                <span class="product-category">{{ producto.categoria|replace({'-': ' '})|capitalize }}</span>
-                                <h5 class="product-name">{{ producto.nombre }}</h5>
-                                <div class="product-price">{{ producto.precio|number_format(2, ',', '.') }} €</div>
-                                {% if producto.ubicacion %}
-                                    <small class="product-location">📍 {{ producto.ubicacion }}</small>
-                                {% endif %}
+    {# ========== LISTADO DE PRODUCTOS ========== #}
+    <section aria-labelledby="productos-heading">
+        <h2 id="productos-heading" class="visually-hidden">
+            Lista de productos disponibles
+        </h2>
+        
+        {% if productos|length > 0 %}
+            <div class="row g-4" role="list" aria-label="Productos disponibles">
+                {% for producto in productos %}
+                    <article class="col-sm-6 col-lg-4 col-xl-3" role="listitem">
+                        <div class="card h-100 shadow-sm product-card">
+                            {# Imagen del producto #}
+                            {% if producto.imagen %}
+                                <img src="{{ asset('uploads/productos/' ~ producto.imagen) }}" 
+                                     class="card-img-top product-img" 
+                                     alt="Imagen de {{ producto.nombre }}"
+                                     loading="lazy"
+                                     width="300"
+                                     height="200">
+                            {% else %}
+                                <div class="card-img-top product-img-placeholder d-flex align-items-center justify-content-center bg-light" 
+                                     role="img" 
+                                     aria-label="Sin imagen disponible para {{ producto.nombre }}">
+                                    <span aria-hidden="true" class="display-4 text-muted">📦</span>
+                                </div>
+                            {% endif %}
+                            
+                            {# Información del producto #}
+                            <div class="card-body d-flex flex-column">
+                                <h3 class="card-title h5">{{ producto.nombre }}</h3>
+                                <p class="text-muted small mb-2">
+                                    <span class="visually-hidden">Categoría:</span>
+                                    {{ producto.categoria }}
+                                </p>
+                                <p class="card-text flex-grow-1">
+                                    {{ producto.descripcion|slice(0, 80) }}{% if producto.descripcion|length > 80 %}...{% endif %}
+                                </p>
+                                <p class="fw-bold fs-5 text-primary mb-3">
+                                    <span class="visually-hidden">Precio:</span>
+                                    {{ producto.precio|number_format(2, ',', '.') }} €
+                                </p>
+                                <a href="{{ path('app_tienda_detalle', {id: producto.id}) }}" 
+                                   class="btn btn-outline-primary mt-auto"
+                                   aria-label="Ver detalles de {{ producto.nombre }}">
+                                    Ver Detalle
+                                </a>
                             </div>
                         </div>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="hero-text-box text-center">
-            <div class="empty-state">
-                <span class="empty-icon">🔍</span>
-                <h3>No se encontraron productos</h3>
-                <p class="text-muted">Intenta con otros términos de búsqueda o categoría</p>
-                <a href="{{ path('app_tienda') }}" class="btn btn-register">
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            {# Estado vacío #}
+            <div class="text-center py-5" role="status" aria-live="polite">
+                <span aria-hidden="true" class="display-1">🔍</span>
+                <h3 class="mt-3">No se encontraron productos</h3>
+                <p class="text-muted">
+                    Prueba con otros términos de búsqueda o selecciona otra categoría.
+                </p>
+                <a href="{{ path('app_tienda') }}" class="btn btn-primary">
                     Ver todos los productos
                 </a>
             </div>
-        </div>
-    {% endif %}
-</div>
+        {% endif %}
+    </section>
+</section>
 {% endblock %}

@@ -1,78 +1,189 @@
+{# ===================================================================== #}
+{#  Página de contacto para proveedores - Accesibilidad WCAG 2.1 AA     #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Solicitud para ser Proveedor - Economik0{% endblock %}
+{% block title %}Soy Proveedor - Economik0{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <div class="hero-text-box">
-                <h1 class="mb-4">Sé nuestro<br><span class="zero-color">Proveedor</span></h1>
-                <p class="lead mb-4" style="letter-spacing: -0.02em;">
-                    ¿Tienes productos increíbles? Únete a nuestra red de proveedores.
-                </p>
+<section class="container py-5" aria-labelledby="proveedor-heading">
+    <article class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card glass-card shadow-lg">
+                {# ========== ENCABEZADO ========== #}
+                <header class="card-body text-center">
+                    <h1 id="proveedor-heading" class="card-title fw-bold">
+                        ¿Quieres vender en Economik<span class="text-accent">0</span>?
+                    </h1>
+                    <p class="text-muted lead">
+                        Conecta directamente con consumidores sin intermediarios
+                    </p>
+                </header>
 
-                {# Mensajes Flash #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
+                <div class="card-body p-4">
+                    {# ========== MENSAJES FLASH ========== #}
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success" role="alert" aria-live="polite">
+                            <span aria-hidden="true">✅</span>
                             {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                         </div>
                     {% endfor %}
-                {% endfor %}
 
-                {# Formulario #}
-                {{ form_start(form, {'attr': {'class': 'proveedor-form', 'novalidate': 'novalidate'}}) }}
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.FirstName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(form.FirstName) }}
-                            {{ form_errors(form.FirstName) }}
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger" role="alert" aria-live="assertive">
+                            <span aria-hidden="true">❌</span>
+                            {{ message }}
                         </div>
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.lastName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(form.lastName) }}
-                            {{ form_errors(form.lastName) }}
+                    {% endfor %}
+
+                    {# ========== FORMULARIO DE CONTACTO ========== #}
+                    {{ form_start(form, {
+                        'attr': {
+                            'novalidate': 'novalidate',
+                            'aria-label': 'Formulario de contacto para proveedores'
+                        }
+                    }) }}
+
+                        {# Indicador de campos requeridos #}
+                        <p class="text-muted small mb-4">
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            Los campos marcados son obligatorios
+                        </p>
+
+                        {# Campo Nombre #}
+                        <div class="mb-4">
+                            {{ form_label(form.FirstName, 'Tu nombre', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            {{ form_widget(form.FirstName, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'Ej: Juan',
+                                    'aria-required': 'true',
+                                    'aria-describedby': 'firstname-errors'
+                                }
+                            }) }}
+                            <div id="firstname-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.FirstName) }}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(form.name) }}
-                            {{ form_errors(form.name) }}
+                        {# Campo Apellidos #}
+                        <div class="mb-4">
+                            {{ form_label(form.lastName, 'Apellidos', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            {{ form_widget(form.lastName, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'Ej: García López',
+                                    'aria-required': 'true',
+                                    'aria-describedby': 'lastname-errors'
+                                }
+                            }) }}
+                            <div id="lastname-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.lastName) }}
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(form.mail, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(form.mail) }}
-                            {{ form_errors(form.mail) }}
+
+                        {# Campo Empresa #}
+                        <div class="mb-4">
+                            {{ form_label(form.name, 'Nombre de empresa', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            {{ form_widget(form.name, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'Ej: Huerta La Esperanza',
+                                    'aria-required': 'true',
+                                    'aria-describedby': 'name-errors'
+                                }
+                            }) }}
+                            <div id="name-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.name) }}
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.message, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                        {{ form_widget(form.message) }}
-                        {{ form_errors(form.message) }}
-                    </div>
+                        {# Campo Email #}
+                        <div class="mb-4">
+                            {{ form_label(form.mail, 'Correo electrónico', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            {{ form_widget(form.mail, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'tu@email.com',
+                                    'autocomplete': 'email',
+                                    'aria-required': 'true',
+                                    'aria-describedby': 'mail-help mail-errors'
+                                }
+                            }) }}
+                            <small id="mail-help" class="form-text text-muted">
+                                Te contactaremos por este medio
+                            </small>
+                            <div id="mail-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.mail) }}
+                            </div>
+                        </div>
 
-                    <div class="mb-4">
-                        {{ form_label(form.img, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                        {{ form_widget(form.img) }}
-                        {{ form_errors(form.img) }}
-                        <small class="text-muted d-block mt-1">Formatos aceptados: JPEG, PNG. Tamaño máximo: 5MB</small>
-                    </div>
+                        {# Campo Mensaje #}
+                        <div class="mb-4">
+                            {{ form_label(form.message, 'Cuéntanos sobre ti', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            {{ form_widget(form.message, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'rows': '5',
+                                    'placeholder': '¿Qué productos ofreces? ¿De dónde eres?',
+                                    'aria-required': 'true',
+                                    'aria-describedby': 'message-help message-errors'
+                                }
+                            }) }}
+                            <small id="message-help" class="form-text text-muted">
+                                Describe tu actividad y productos que ofreces
+                            </small>
+                            <div id="message-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.message) }}
+                            </div>
+                        </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-register btn-lg">
+                        {# Campo Imagen (opcional) #}
+                        {% if form.img is defined %}
+                        <div class="mb-4">
+                            {{ form_label(form.img, 'Imagen o documento (opcional)', {
+                                'label_attr': {'class': 'form-label fw-semibold'}
+                            }) }}
+                            {{ form_widget(form.img, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'aria-describedby': 'img-help img-errors'
+                                }
+                            }) }}
+                            <small id="img-help" class="form-text text-muted">
+                                Formatos: JPG, PNG, PDF. Tamaño máximo: 2MB
+                            </small>
+                            <div id="img-errors" role="alert" aria-live="polite">
+                                {{ form_errors(form.img) }}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {# Botón de envío #}
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <span aria-hidden="true">📨</span>
                             Enviar Solicitud
                         </button>
-                    </div>
 
-                {{ form_end(form) }}
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </article>
+</section>
 {% endblock %}

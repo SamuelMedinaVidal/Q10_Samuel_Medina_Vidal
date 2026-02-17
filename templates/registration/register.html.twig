@@ -1,83 +1,117 @@
+{# ===================================================================== #}
+{#  Registro de usuarios - Accesibilidad WCAG 2.1 AA                    #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Registro - Economik0{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-6">
-            <div class="hero-text-box">
-                <h1 class="mb-4">Únete a<br><span class="zero-color">Economik0</span></h1>
-                <p class="lead mb-4" style="letter-spacing: -0.02em;">
-                    Crea tu cuenta y empieza a ahorrar hoy mismo.
-                </p>
+<section class="container py-5 d-flex justify-content-center" aria-labelledby="registro-heading">
+    <article class="card glass-card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        {# ========== ENCABEZADO ========== #}
+        <header class="card-body text-center">
+            <h1 id="registro-heading" class="card-title fw-bold">
+                Crear <span class="text-accent">Cuenta</span>
+            </h1>
+            <p class="text-muted">Únete a Economik0 y apoya a productores locales</p>
+        </header>
 
-                {# Mensajes Flash #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
+        {# ========== FORMULARIO DE REGISTRO ========== #}
+        {{ form_start(registrationForm, {
+            'attr': {
+                'novalidate': 'novalidate',
+                'aria-label': 'Formulario de registro de nueva cuenta'
+            }
+        }) }}
 
-                {# Formulario de Registro #}
-                {{ form_start(registrationForm, {'attr': {'class': 'auth-form', 'novalidate': 'novalidate'}}) }}
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(registrationForm.firstName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(registrationForm.firstName) }}
-                            {{ form_errors(registrationForm.firstName) }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(registrationForm.lastName, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(registrationForm.lastName) }}
-                            {{ form_errors(registrationForm.lastName) }}
-                        </div>
-                    </div>
+            {# Indicador de campos requeridos #}
+            <p class="text-muted small mb-4" id="required-fields-note">
+                <span class="text-danger" aria-hidden="true">*</span>
+                Los campos marcados son obligatorios
+            </p>
 
-                    <div class="mb-3">
-                        {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                        {{ form_widget(registrationForm.email) }}
-                        {{ form_errors(registrationForm.email) }}
-                    </div>
+            {# Campo Email #}
+            <div class="mb-4">
+                {{ form_label(registrationForm.email, 'Correo Electrónico', {
+                    'label_attr': {'class': 'form-label fw-semibold'}
+                }) }}
+                <span class="text-danger" aria-hidden="true">*</span>
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'form-control form-control-lg',
+                        'placeholder': 'tu@email.com',
+                        'autocomplete': 'email',
+                        'aria-required': 'true',
+                        'aria-describedby': 'email-help email-errors'
+                    }
+                }) }}
+                <small id="email-help" class="form-text text-muted">
+                    Usaremos este email para tu inicio de sesión
+                </small>
+                <div id="email-errors" role="alert" aria-live="polite">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+            </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(registrationForm.plainPassword.first) }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'form-label-custom'}}) }}
-                            {{ form_widget(registrationForm.plainPassword.second) }}
-                        </div>
-                    </div>
+            {# Campo Contraseña #}
+            <div class="mb-4">
+                {{ form_label(registrationForm.plainPassword, 'Contraseña', {
+                    'label_attr': {'class': 'form-label fw-semibold'}
+                }) }}
+                <span class="text-danger" aria-hidden="true">*</span>
+                {{ form_widget(registrationForm.plainPassword, {
+                    'attr': {
+                        'class': 'form-control form-control-lg',
+                        'placeholder': '••••••••',
+                        'autocomplete': 'new-password',
+                        'aria-required': 'true',
+                        'aria-describedby': 'password-help password-errors'
+                    }
+                }) }}
+                <small id="password-help" class="form-text text-muted">
+                    Mínimo 6 caracteres para mayor seguridad
+                </small>
+                <div id="password-errors" role="alert" aria-live="polite">
                     {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+            </div>
 
-                    <div class="mb-4">
-                        <div class="form-check">
-                            {{ form_widget(registrationForm.agreeTerms) }}
-                            {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
-                        </div>
+            {# Checkbox de términos (si existe) #}
+            {% if registrationForm.agreeTerms is defined %}
+                <div class="mb-4 form-check">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        'attr': {
+                            'class': 'form-check-input',
+                            'aria-describedby': 'terms-errors'
+                        }
+                    }) }}
+                    {{ form_label(registrationForm.agreeTerms, 'Acepto los términos y condiciones', {
+                        'label_attr': {'class': 'form-check-label'}
+                    }) }}
+                    <span class="text-danger" aria-hidden="true">*</span>
+                    <div id="terms-errors" role="alert" aria-live="polite">
                         {{ form_errors(registrationForm.agreeTerms) }}
                     </div>
+                </div>
+            {% endif %}
 
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-register btn-lg">
-                            Crear Cuenta
-                        </button>
-                    </div>
+            {# Botón de envío #}
+            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                <span aria-hidden="true">✨</span>
+                Crear mi cuenta
+            </button>
 
-                    <p class="text-center mb-0" style="color: #666;">
-                        ¿Ya tienes cuenta? 
-                        <a href="{{ path('app_login') }}" class="link-login">Iniciar Sesión</a>
-                    </p>
+        {{ form_end(registrationForm) }}
 
-                {{ form_end(registrationForm) }}
-            </div>
-        </div>
-    </div>
-</div>
+        {# ========== ENLACES ADICIONALES ========== #}
+        <footer class="text-center mt-3">
+            <p class="mb-2 text-muted">
+                ¿Ya tienes cuenta?
+            </p>
+            <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">
+                Iniciar sesión
+            </a>
+        </footer>
+    </article>
+</section>
 {% endblock %}

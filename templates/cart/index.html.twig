@@ -1,124 +1,196 @@
+{# ===================================================================== #}
+{#  Carrito de compras - Accesibilidad WCAG 2.1 AA                      #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Mi Carrito - Economik0{% endblock %}
+{% block title %}Carrito - Economik0{% endblock %}
 
 {% block body %}
-<div class="container py-4">
-    <div class="hero-text-box">
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-                <h1 class="mb-2">Mi<br><span class="zero-color">Carrito</span></h1>
-                <p class="lead mb-0" style="letter-spacing: -0.02em;">
-                    Revisa tus productos antes de finalizar
-                </p>
+<section class="container py-5" aria-labelledby="cart-heading">
+    {# ========== ENCABEZADO ========== #}
+    <header class="text-center mb-5">
+        <h1 id="cart-heading" class="display-4 fw-bold">
+            Tu <span class="text-accent">Carrito</span>
+        </h1>
+    </header>
+
+    {# ========== MENSAJES FLASH ACCESIBLES ========== #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" 
+                 role="alert" 
+                 aria-live="polite">
+                <span>{{ message }}</span>
+                <button type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="alert" 
+                        aria-label="Cerrar mensaje de alerta"></button>
             </div>
-            <a href="{{ path('app_tienda') }}" class="btn btn-outline-secondary">
-                ← Seguir comprando
-            </a>
-        </div>
-
-        {# Mensajes Flash #}
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                </div>
-            {% endfor %}
         {% endfor %}
+    {% endfor %}
 
-        {% if items|length > 0 %}
-            <div class="table-responsive mb-4">
-                <table class="table table-cart">
-                    <thead>
+    {% if items|length > 0 %}
+        {# ========== TABLA DE PRODUCTOS (ACCESIBLE) ========== #}
+        <section aria-labelledby="productos-carrito-heading">
+            <h2 id="productos-carrito-heading" class="visually-hidden">
+                Productos en tu carrito
+            </h2>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" 
+                       aria-describedby="cart-summary">
+                    <caption class="visually-hidden">
+                        Lista de productos en tu carrito de compras
+                    </caption>
+                    <thead class="table-light">
                         <tr>
-                            <th>Producto</th>
-                            <th class="text-center">Precio</th>
-                            <th class="text-center">Cantidad</th>
-                            <th class="text-center">Subtotal</th>
-                            <th></th>
+                            <th scope="col">Producto</th>
+                            <th scope="col" class="text-center">Precio Unitario</th>
+                            <th scope="col" class="text-center">Cantidad</th>
+                            <th scope="col" class="text-center">Subtotal</th>
+                            <th scope="col" class="text-center">
+                                <span class="visually-hidden">Acciones</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in items %}
                             <tr>
+                                {# Producto #}
                                 <td>
-                                    <div class="cart-product-info">
+                                    <div class="d-flex align-items-center gap-3">
                                         {% if item.product.imagen %}
                                             <img src="{{ asset('uploads/productos/' ~ item.product.imagen) }}" 
-                                                 alt="{{ item.product.nombre }}" 
-                                                 class="cart-product-img">
+                                                 alt="Imagen de {{ item.product.nombre }}"
+                                                 class="rounded"
+                                                 width="60"
+                                                 height="60"
+                                                 loading="lazy">
                                         {% else %}
-                                            <div class="cart-product-img-placeholder">📦</div>
+                                            <span aria-hidden="true" class="fs-3">📦</span>
+                                            <span class="visually-hidden">Sin imagen</span>
                                         {% endif %}
-                                        <div class="cart-product-details">
+                                        <div>
                                             <strong>{{ item.product.nombre }}</strong>
-                                            <small class="text-muted d-block">{{ item.product.categoria|replace({'-': ' '})|capitalize }}</small>
+                                            <br>
+                                            <small class="text-muted">
+                                                <span class="visually-hidden">Categoría:</span>
+                                                {{ item.product.categoria }}
+                                            </small>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="text-center align-middle">
-                                    <span class="cart-price">{{ item.product.precio|number_format(2, ',', '.') }} €</span>
+
+                                {# Precio unitario #}
+                                <td class="text-center">
+                                    <span class="visually-hidden">Precio:</span>
+                                    {{ item.product.precio|number_format(2, ',', '.') }} €
                                 </td>
-                                <td class="text-center align-middle">
-                                    <div class="quantity-controls">
+
+                                {# Cantidad con controles accesibles #}
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center align-items-center gap-2" 
+                                         role="group" 
+                                         aria-label="Control de cantidad para {{ item.product.nombre }}">
+                                        
+                                        {# Botón decrementar #}
                                         <a href="{{ path('app_cart_decrease', {id: item.product.id}) }}" 
-                                           class="btn btn-quantity">−</a>
-                                        <span class="quantity-value">{{ item.quantity }}</span>
+                                           class="btn btn-outline-secondary btn-sm {% if item.quantity <= 1 %}disabled{% endif %}"
+                                           aria-label="Reducir cantidad de {{ item.product.nombre }}"
+                                           {% if item.quantity <= 1 %}aria-disabled="true" tabindex="-1"{% endif %}>
+                                            <span aria-hidden="true">−</span>
+                                        </a>
+
+                                        {# Cantidad actual #}
+                                        <span class="fw-bold px-2" 
+                                              aria-live="polite" 
+                                              aria-atomic="true">
+                                            <span class="visually-hidden">Cantidad actual:</span>
+                                            {{ item.quantity }}
+                                        </span>
+
+                                        {# Botón incrementar #}
                                         <a href="{{ path('app_cart_increase', {id: item.product.id}) }}" 
-                                           class="btn btn-quantity">+</a>
+                                           class="btn btn-outline-secondary btn-sm {% if item.quantity >= item.product.cantidad %}disabled{% endif %}"
+                                           aria-label="Aumentar cantidad de {{ item.product.nombre }}"
+                                           {% if item.quantity >= item.product.cantidad %}aria-disabled="true" tabindex="-1"{% endif %}>
+                                            <span aria-hidden="true">+</span>
+                                        </a>
                                     </div>
                                 </td>
-                                <td class="text-center align-middle">
-                                    <span class="cart-subtotal">{{ item.subtotal|number_format(2, ',', '.') }} €</span>
+
+                                {# Subtotal #}
+                                <td class="text-center fw-bold">
+                                    <span class="visually-hidden">Subtotal:</span>
+                                    {{ (item.product.precio * item.quantity)|number_format(2, ',', '.') }} €
                                 </td>
-                                <td class="text-center align-middle">
-                                    <a href="{{ path('app_cart_remove', {id: item.product.id}) }}" 
-                                       class="btn btn-remove"
-                                       onclick="return confirm('¿Eliminar este producto del carrito?');">
-                                        🗑️
-                                    </a>
+
+                                {# Eliminar #}
+                                <td class="text-center">
+                                    <form action="{{ path('app_cart_remove', {id: item.product.id}) }}" 
+                                          method="post"
+                                          aria-label="Eliminar {{ item.product.nombre }} del carrito">
+                                        <button type="submit" 
+                                                class="btn btn-outline-danger btn-sm"
+                                                aria-label="Eliminar {{ item.product.nombre }}">
+                                            <span aria-hidden="true">🗑️</span>
+                                            <span class="visually-hidden">Eliminar</span>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
+                    <tfoot class="table-light">
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold fs-5">
+                                Total:
+                            </td>
+                            <td class="text-center fw-bold fs-5 text-primary" id="cart-summary">
+                                {{ total|number_format(2, ',', '.') }} €
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
+        </section>
 
-            {# Total y acciones #}
-            <div class="cart-footer">
-                <div class="row align-items-center">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <a href="{{ path('app_cart_clear') }}" 
-                           class="btn btn-outline-danger"
-                           onclick="return confirm('¿Vaciar todo el carrito?');">
-                            🗑️ Vaciar carrito
-                        </a>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <div class="cart-total mb-3">
-                            <span class="total-label">Total:</span>
-                            <span class="total-amount">{{ total|number_format(2, ',', '.') }} €</span>
-                        </div>
-                        <button class="btn btn-register btn-lg btn-checkout" disabled>
-                            🛒 Finalizar Compra (Próximamente)
-                        </button>
-                    </div>
-                </div>
+        {# ========== ACCIONES DEL CARRITO ========== #}
+        <nav aria-label="Acciones del carrito" class="d-flex justify-content-between flex-wrap gap-3 mt-4">
+            <a href="{{ path('app_tienda') }}" class="btn btn-outline-secondary">
+                <span aria-hidden="true">←</span>
+                Seguir Comprando
+            </a>
+            <div class="d-flex gap-2">
+                <form action="{{ path('app_cart_clear') }}" method="post">
+                    <button type="submit" 
+                            class="btn btn-outline-danger"
+                            aria-label="Vaciar todo el carrito">
+                        <span aria-hidden="true">🗑️</span>
+                        Vaciar Carrito
+                    </button>
+                </form>
+                <a href="#" class="btn btn-primary" aria-disabled="true">
+                    <span aria-hidden="true">💳</span>
+                    Finalizar Compra
+                </a>
             </div>
+        </nav>
 
-        {% else %}
-            <div class="text-center py-5">
-                <div class="empty-state">
-                    <span class="empty-icon">🛒</span>
-                    <h3>Tu carrito está vacío</h3>
-                    <p class="text-muted">¡Añade algunos productos para empezar!</p>
-                    <a href="{{ path('app_tienda') }}" class="btn btn-register btn-lg">
-                        Ir a la tienda
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-    </div>
-</div>
+    {% else %}
+        {# ========== CARRITO VACÍO ========== #}
+        <div class="text-center py-5" role="status" aria-live="polite">
+            <span aria-hidden="true" class="display-1">🛒</span>
+            <h2 class="mt-3">Tu carrito está vacío</h2>
+            <p class="text-muted mb-4">
+                Explora nuestra tienda y descubre productos frescos de productores locales.
+            </p>
+            <a href="{{ path('app_tienda') }}" class="btn btn-primary btn-lg">
+                <span aria-hidden="true">🛍️</span>
+                Ir a la Tienda
+            </a>
+        </div>
+    {% endif %}
+</section>
 {% endblock %}

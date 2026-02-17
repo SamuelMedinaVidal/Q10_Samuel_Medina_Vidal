@@ -61,8 +61,8 @@ class TiendaController extends AbstractController
         return $this->render('tienda/index.html.twig', [
             'productos' => $productos,
             'categorias' => $categorias,
-            'query' => $query,
-            'categoriaActual' => $categoria,
+            'q' => $query,
+            'categoria' => $categoria,
         ]);
     }
 

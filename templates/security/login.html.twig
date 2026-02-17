@@ -1,76 +1,102 @@
+{# ===================================================================== #}
+{#  Inicio de sesión - Accesibilidad WCAG 2.1 AA                        #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Iniciar Sesión - Economik0{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-5">
-            <div class="hero-text-box">
-                <h1 class="mb-4">Bienvenido<br><span class="zero-color">de nuevo</span></h1>
-                <p class="lead mb-4" style="letter-spacing: -0.02em;">
-                    Accede a tu cuenta para ver las mejores ofertas.
-                </p>
+<section class="container py-5 d-flex justify-content-center" aria-labelledby="login-heading">
+    <article class="card glass-card shadow-lg p-4" style="max-width: 450px; width: 100%;">
+        {# ========== ENCABEZADO ========== #}
+        <header class="card-body text-center">
+            <h1 id="login-heading" class="card-title fw-bold">
+                Iniciar <span class="text-accent">Sesión</span>
+            </h1>
+            <p class="text-muted">Accede a tu cuenta de Economik0</p>
+        </header>
 
-                {# Mensajes Flash #}
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }} alert-dismissible fade show mb-4" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
-                {# Error de autenticación #}
-                {% if error %}
-                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                    </div>
-                {% endif %}
-
-                {# Formulario de Login #}
-                <form class="auth-form" method="post" novalidate>
-                    <div class="mb-3">
-                        <label for="inputEmail" class="form-label-custom">Correo electrónico</label>
-                        <input type="email" 
-                               value="{{ last_username }}" 
-                               name="email" 
-                               id="inputEmail" 
-                               class="form-control form-control-custom" 
-                               placeholder="tu@email.com"
-                               autocomplete="email" 
-                               required 
-                               autofocus>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="inputPassword" class="form-label-custom">Contraseña</label>
-                        <input type="password" 
-                               name="password" 
-                               id="inputPassword" 
-                               class="form-control form-control-custom" 
-                               placeholder="Tu contraseña"
-                               autocomplete="current-password" 
-                               required>
-                    </div>
-
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-register btn-lg">
-                            Iniciar Sesión
-                        </button>
-                    </div>
-
-                    <p class="text-center mb-0" style="color: #666;">
-                        ¿No tienes cuenta? 
-                        <a href="{{ path('app_register') }}" class="link-login">Regístrate</a>
-                    </p>
-                </form>
+        {# ========== ERRORES DE AUTENTICACIÓN ========== #}
+        {% if error %}
+            <div class="alert alert-danger" 
+                 role="alert" 
+                 aria-live="assertive"
+                 id="login-error">
+                <span aria-hidden="true">⚠️</span>
+                {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
-        </div>
-    </div>
-</div>
+        {% endif %}
+
+        {# ========== FORMULARIO DE LOGIN ========== #}
+        <form method="post" 
+              action="{{ path('app_login') }}"
+              aria-label="Formulario de inicio de sesión"
+              aria-describedby="{% if error %}login-error{% endif %}"
+              novalidate>
+            
+            {# Campo Email #}
+            <div class="mb-4">
+                <label for="inputEmail" class="form-label fw-semibold">
+                    Correo Electrónico
+                    <span class="text-danger" aria-hidden="true">*</span>
+                </label>
+                <input type="email" 
+                       id="inputEmail"
+                       name="email"
+                       class="form-control form-control-lg" 
+                       placeholder="tu@email.com"
+                       value="{{ last_username }}"
+                       autocomplete="email"
+                       required
+                       aria-required="true"
+                       aria-describedby="emailHelp"
+                       {% if error %}aria-invalid="true"{% endif %}
+                       autofocus>
+                <small id="emailHelp" class="form-text text-muted">
+                    Introduce el email con el que te registraste
+                </small>
+            </div>
+
+            {# Campo Contraseña #}
+            <div class="mb-4">
+                <label for="inputPassword" class="form-label fw-semibold">
+                    Contraseña
+                    <span class="text-danger" aria-hidden="true">*</span>
+                </label>
+                <input type="password" 
+                       id="inputPassword"
+                       name="password"
+                       class="form-control form-control-lg" 
+                       placeholder="••••••••"
+                       autocomplete="current-password"
+                       required
+                       aria-required="true"
+                       aria-describedby="passwordHelp"
+                       {% if error %}aria-invalid="true"{% endif %}>
+                <small id="passwordHelp" class="form-text text-muted">
+                    Mínimo 6 caracteres
+                </small>
+            </div>
+
+            {# Token CSRF oculto #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {# Botón de envío #}
+            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                <span aria-hidden="true">🔐</span>
+                Acceder
+            </button>
+        </form>
+
+        {# ========== ENLACES ADICIONALES ========== #}
+        <footer class="text-center mt-3">
+            <p class="mb-2 text-muted">
+                ¿No tienes cuenta?
+            </p>
+            <a href="{{ path('app_register') }}" class="btn btn-outline-secondary">
+                Crear una cuenta
+            </a>
+        </footer>
+    </article>
+</section>
 {% endblock %}

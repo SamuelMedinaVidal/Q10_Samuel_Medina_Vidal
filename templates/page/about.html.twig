@@ -1,35 +1,111 @@
+{# ===================================================================== #}
+{#  Página Quiénes Somos - Accesibilidad WCAG 2.1 AA                    #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Economik0 - Quiénes Somos{% endblock %}
+{% block title %}Quiénes Somos - Economik0{% endblock %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="row min-vh-100 align-items-center justify-content-center">
+<article class="container py-5" aria-labelledby="about-heading">
+    <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="hero-text-box">
-                <h1 class="display-3 fw-bold mb-4">Nuestra <span class="zero-color">Misión</span></h1>
-                
-                <div class="row text-start mt-5">
-                    <div class="col-md-6 mb-4">
-                        <h3 class="fw-bold">¿Qué es Economik0?</h3>
-                        <p class="text-secondary fs-5">
-                            Somos una plataforma nacida para eliminar las barreras entre el productor local y el consumidor final. Creemos en un comercio donde el 0 representa **cero intermediarios**.
-                        </p>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <h3 class="fw-bold">Por qué elegirnos</h3>
-                        <p class="text-secondary fs-5">
-                            Al comprar aquí, aseguras que el 100% del valor llegue al agricultor o ganadero, garantizando productos más frescos y precios más justos para tu bolsillo.
-                        </p>
-                    </div>
-                </div>
+            <div class="card glass-card shadow-lg p-5">
+                {# ========== ENCABEZADO ========== #}
+                <header class="text-center mb-5">
+                    <h1 id="about-heading" class="display-4 fw-bold">
+                        Quiénes <span class="text-accent">Somos</span>
+                    </h1>
+                    <p class="lead text-muted">
+                        Conectamos productores locales con consumidores conscientes
+                    </p>
+                </header>
 
-                <div class="mt-4 pt-4 border-top">
-                    <p class="lead italic text-muted">"Revolucionando el consumo local, un prisma a la vez."</p>
-                    <a href="{{ path('index') }}" class="btn btn-outline-dark mt-3">Volver al Inicio</a>
-                </div>
+                {# ========== MISIÓN ========== #}
+                <section aria-labelledby="mision-heading" class="mb-5">
+                    <h2 id="mision-heading" class="h3 fw-bold mb-3">
+                        <span aria-hidden="true">🎯</span>
+                        Nuestra Misión
+                    </h2>
+                    <p class="text-muted">
+                        En <strong>Economik0</strong> creemos en un comercio más justo y directo. 
+                        Eliminamos intermediarios para que los productores locales reciban 
+                        precios justos por sus productos y los consumidores accedan a 
+                        alimentos frescos y de calidad.
+                    </p>
+                </section>
+
+                {# ========== VALORES ========== #}
+                <section aria-labelledby="valores-heading" class="mb-5">
+                    <h2 id="valores-heading" class="h3 fw-bold mb-4">
+                        <span aria-hidden="true">💚</span>
+                        Nuestros Valores
+                    </h2>
+                    <ul class="list-unstyled row g-4" role="list">
+                        <li class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <span aria-hidden="true" class="fs-3">🌱</span>
+                                <div>
+                                    <h3 class="h5 fw-semibold">Sostenibilidad</h3>
+                                    <p class="text-muted mb-0">
+                                        Fomentamos prácticas agrícolas respetuosas con el medio ambiente.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <span aria-hidden="true" class="fs-3">🤝</span>
+                                <div>
+                                    <h3 class="h5 fw-semibold">Comercio Justo</h3>
+                                    <p class="text-muted mb-0">
+                                        Garantizamos precios justos tanto para productores como consumidores.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <span aria-hidden="true" class="fs-3">🏡</span>
+                                <div>
+                                    <h3 class="h5 fw-semibold">Economía Local</h3>
+                                    <p class="text-muted mb-0">
+                                        Apoyamos a pequeños productores y fortalecemos las comunidades rurales.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <span aria-hidden="true" class="fs-3">✨</span>
+                                <div>
+                                    <h3 class="h5 fw-semibold">Calidad</h3>
+                                    <p class="text-muted mb-0">
+                                        Solo ofrecemos productos frescos y de la más alta calidad.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                {# ========== LLAMADA A LA ACCIÓN ========== #}
+                <footer class="text-center pt-4 border-top">
+                    <p class="text-muted mb-3">
+                        ¿Quieres formar parte de nuestra comunidad?
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">
+                            <span aria-hidden="true">🛒</span>
+                            Comprar productos
+                        </a>
+                        <a href="{{ path('app_proveedor') }}" class="btn btn-outline-secondary btn-lg">
+                            <span aria-hidden="true">🌾</span>
+                            Soy proveedor
+                        </a>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
-</div>
+</article>
 {% endblock %}

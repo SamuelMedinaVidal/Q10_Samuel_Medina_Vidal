@@ -1,19 +1,33 @@
+{# ===================================================================== #}
+{#  Página de inicio - Accesibilidad WCAG 2.1 AA                        #}
+{# ===================================================================== #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Economik0 - Inicio{% endblock %}
+{% block title %}Economik0 - Comercio Local Sin Intermediarios{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row min-vh-100 align-items-center justify-content-center">
-        <div class="col-lg-8">
-            <div class="hero-text-box text-center">
-                <h1 class="display-1 fw-bold">Economik<span class="zero-color">0</span></h1>
-                <p class="lead fs-3 mb-4 text-secondary">
-                    La conexión directa con el campo. <br>
-                    Fresco como siempre, al precio justo.
-                </p>
-                </div>
-        </div>
-    </div>
-</div>
+<article class="container py-5 text-center" aria-labelledby="hero-heading">
+    {# ========== HERO SECTION ========== #}
+    <header class="py-5">
+        <h1 id="hero-heading" class="display-3 fw-bold mb-4">
+            Bienvenido a Economik<span class="text-accent">0</span>
+        </h1>
+        <p class="lead text-muted mb-5 col-lg-8 mx-auto">
+            La plataforma que conecta productores locales con consumidores conscientes. 
+            Sin intermediarios, precios justos y productos frescos directamente del campo a tu mesa.
+        </p>
+        
+        {# Llamadas a la acción #}
+        <nav aria-label="Acciones principales" class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ path('app_tienda') }}" class="btn btn-primary btn-lg">
+                <span aria-hidden="true">🛍️</span>
+                Explorar Tienda
+            </a>
+            <a href="{{ path('about') }}" class="btn btn-outline-secondary btn-lg">
+                <span aria-hidden="true">ℹ️</span>
+                Conocer más
+            </a>
+        </nav>
+    </header>
+</article>
 {% endblock %}

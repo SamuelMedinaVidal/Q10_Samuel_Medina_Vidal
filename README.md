@@ -417,6 +417,115 @@ El CSS utiliza variables CSS para mantener consistencia:
 
 ---
 
+## ♿ Accesibilidad (WCAG 2.1 AA)
+
+Economik0 está diseñado siguiendo las pautas **WCAG 2.1 Nivel AA** para garantizar una experiencia inclusiva para todos los usuarios, incluyendo personas con discapacidades visuales, motoras o cognitivas.
+
+### ✅ Cumplimiento Implementado
+
+| Criterio WCAG | Descripción | Implementación |
+|---------------|-------------|----------------|
+| **1.1.1** | Alternativas textuales | `alt` en todas las imágenes, `aria-label` en iconos |
+| **1.3.1** | Info y relaciones | HTML semántico (`<main>`, `<nav>`, `<article>`, `<section>`) |
+| **1.3.2** | Secuencia significativa | Orden lógico del DOM, heading hierarchy (h1→h2→h3) |
+| **1.4.3** | Contraste mínimo | Ratio ≥4.5:1 en textos normales |
+| **2.1.1** | Teclado | Todos los elementos interactivos son accesibles |
+| **2.4.1** | Evitar bloques | "Skip to content" link para saltar navegación |
+| **2.4.4** | Propósito del enlace | `aria-label` descriptivos en enlaces/botones |
+| **2.4.7** | Focus visible | `:focus-visible` con outline destacado |
+| **3.3.1** | Identificación de errores | `role="alert"` y `aria-live` en mensajes |
+| **3.3.2** | Etiquetas e instrucciones | Labels vinculados, `aria-describedby` para ayudas |
+| **4.1.2** | Nombre, función, valor | ARIA roles y atributos en componentes interactivos |
+
+### 🔧 Características Técnicas
+
+#### HTML Semántico
+```html
+<!-- Estructura de página accesible -->
+<header>         <!-- Cabecera con navegación -->
+<main>           <!-- Contenido principal con id="main-content" -->
+<section>        <!-- Secciones con aria-labelledby -->
+<article>        <!-- Contenido independiente -->
+<nav>            <!-- Navegación con aria-label -->
+<footer>         <!-- Pie de página -->
+```
+
+#### Skip Link (Saltar al contenido)
+```html
+<a href="#main-content" class="skip-link visually-hidden-focusable">
+    Saltar al contenido principal
+</a>
+```
+
+#### Formularios Accesibles
+```html
+<label for="email">Email <span aria-hidden="true">*</span></label>
+<input id="email" 
+       aria-required="true" 
+       aria-describedby="email-help email-errors">
+<small id="email-help">Introduce tu email</small>
+<div id="email-errors" role="alert" aria-live="polite"></div>
+```
+
+#### Tablas con Encabezados
+```html
+<table aria-describedby="descripcion-tabla">
+    <caption class="visually-hidden">Lista de productos</caption>
+    <thead>
+        <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio</th>
+        </tr>
+    </thead>
+</table>
+```
+
+### 🎨 Estilos de Accesibilidad
+
+El archivo `public/css/styles.css` incluye una sección dedicada a accesibilidad:
+
+```css
+/* Focus visible para navegación por teclado */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Respeto a preferencias del usuario */
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; }
+}
+
+/* Soporte para alto contraste */
+@media (prefers-contrast: high) {
+    .btn-primary { background: #000; }
+}
+```
+
+### 🔍 Testing de Accesibilidad
+
+Para verificar la accesibilidad del proyecto, recomendamos:
+
+| Herramienta | Propósito |
+|-------------|-----------|
+| **WAVE** | Extensión del navegador para auditoría visual |
+| **axe DevTools** | Análisis automatizado de accesibilidad |
+| **Lighthouse** | Auditoría integrada en Chrome DevTools |
+| **NVDA/VoiceOver** | Pruebas con lectores de pantalla reales |
+
+### ⌨️ Navegación por Teclado
+
+| Tecla | Acción |
+|-------|--------|
+| `Tab` | Navegar al siguiente elemento interactivo |
+| `Shift+Tab` | Navegar al elemento anterior |
+| `Enter` | Activar enlaces y botones |
+| `Space` | Activar checkboxes y botones |
+| `Esc` | Cerrar modales y menús |
+
+---
+
 ## 🔒 Seguridad
 
 ### Configuración Implementada

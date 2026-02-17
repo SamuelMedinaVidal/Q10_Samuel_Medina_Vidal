@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Economik0 - Plataforma de comercio electrónico que conecta productores locales con consumidores. Sin intermediarios.">
     <title>{% block title %}Economik0{% endblock %}</title>
     
     {% block stylesheets %}
@@ -12,15 +13,39 @@
     {% endblock %}
 </head>
 <body>
-    {# Fondo intenso y centrado #}
-    <div class="bg-wrapper">
+    {# ===== SKIP LINK - Accesibilidad WCAG 2.1 AA ===== #}
+    <a href="#main-content" class="skip-link visually-hidden-focusable">
+        Saltar al contenido principal
+    </a>
+
+    {# Fondo decorativo (aria-hidden para lectores de pantalla) #}
+    <div class="bg-wrapper" aria-hidden="true">
         <div class="light-orb"></div>
     </div>
-    {{ include('partials/_navbar.html.twig') }}
+    
+    {# Cabecera con navegación #}
+    <header>
+        {{ include('partials/_navbar.html.twig') }}
+    </header>
 
-    <main class="d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    {# Contenido principal con landmark accesible #}
+    <main id="main-content" class="d-flex align-items-center justify-content-center" style="min-height: 90vh;" tabindex="-1">
+        {# Región de alertas para lectores de pantalla #}
+        <div id="flash-messages" aria-live="polite" aria-atomic="true" class="visually-hidden">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        
         {% block body %}{% endblock %}
     </main>
+
+    {# Pie de página #}
+    <footer class="visually-hidden">
+        <p>© {{ "now"|date("Y") }} Economik0. Todos los derechos reservados.</p>
+    </footer>
 
     {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
