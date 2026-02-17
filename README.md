@@ -261,11 +261,11 @@ La landing page presenta la marca Economik0 con un diseño minimalista de efecto
 #### Categorías Disponibles
 
 ```
-• Electrónica
-• Ropa y Accesorios
-• Hogar y Jardín
-• Deportes
-• Otros
+• Frutas y Verduras
+• Carnes y Embutidos
+• Lácteos y Huevos
+• Panadería y Bollería
+• Conservas y Enlatados
 ```
 
 ---
